@@ -36,7 +36,7 @@ const BottomTabNavigator = () => {
 				headerShown: false,
 				tabBarInactiveBackgroundColor: '#96C2A8',
 				tabBarActiveBackgroundColor: '#96C2A8',
-				tabBarActiveTintColor: 'white',
+				tabBarActiveTintColor: AppStyles.white.tintColor,
 				tabBarLabelStyle: {
 					borderTopWidth: 0,
 					elevation: 0,

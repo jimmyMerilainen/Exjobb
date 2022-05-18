@@ -24,10 +24,21 @@ export default StyleSheet.create({
 	},
 
 	/*  Colors  */
-	goldColor: { color: '#DDB58E' },
-	greyBackground: { backgroundColor: 'rgba(196, 196, 196, 0.6)' },
-	greyColor: { color: 'rgba(196, 196, 196, 0.6)' },
-	whiteColor: { color: 'white' },
+	gold: {
+		color: '#DDB58E',
+		backgroundColor: '#DDB58E',
+		tintColor: '#DDB58E',
+	},
+	grey: {
+		color: 'rgba(196, 196, 196, 0.6)',
+		backgroundColor: 'rgba(196, 196, 196, 0.6)',
+		tintColor: 'rgba(196, 196, 196, 0.6)',
+	},
+	white: {
+		color: 'white',
+		backgroundColor: 'white',
+		tintColor: 'white',
+	},
 
 	/* Shadow */
 	shadow: {

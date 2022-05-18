@@ -8,7 +8,7 @@ const LoginButton = ({ text, onPress }) => {
 			style={[
 				styles.loginView,
 				AppStyles.shadow,
-				AppStyles.greyBackground,
+				AppStyles.grey,
 				AppStyles.border,
 			]}
 		>

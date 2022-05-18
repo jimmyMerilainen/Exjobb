@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 import AppStyles from '../styles/AppStyles'
 
-const TextInputDefault = ({ placeholder, style }) => {
+const TextInputDefault = ({ placeholder, style, textCallback }) => {
 	return (
 		<View
 			style={[
@@ -13,8 +13,9 @@ const TextInputDefault = ({ placeholder, style }) => {
 			]}
 		>
 			<TextInput
+				onChangeText={(newText) => textCallback(newText)}
 				placeholder={placeholder}
-				placeholderTextColor="#DDB58E"
+				placeholderTextColor={AppStyles.gold.color}
 				style={[styles.textInput, AppStyles.textInput]}
 			/>
 		</View>
