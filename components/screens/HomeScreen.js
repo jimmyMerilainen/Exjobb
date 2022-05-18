@@ -1,7 +1,14 @@
-import { StyleSheet, Text, View, ImageBackground } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  ScrollView,
+} from 'react-native'
 import React from 'react'
 import SearchBarComponent from '../SearchBarComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import CourseCard from '../CourseCard'
 
 const HomeScreen = () => {
   return (
@@ -12,6 +19,9 @@ const HomeScreen = () => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <SearchBarComponent />
+        <ScrollView keyboardDismissMode="on-drag">
+          <CourseCard />
+        </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   )
