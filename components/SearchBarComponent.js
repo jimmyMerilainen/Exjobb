@@ -1,26 +1,19 @@
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const SearchBarComponent = () => {
+  const searchButton = () => {
+    Keyboard.dismiss();
+  };
   return (
-    <View
-      style={{
-        backgroundColor: "white",
-        borderRadius: 15,
-        width: "85%",
-        height: 50,
-        marginBottom: 20,
-        alignItems: "center",
-        borderWidth: 1,
-        borderColor: "#DDB58E",
-        alignSelf: "center",
-        shadowColor: "grey",
-        shadowOpacity: 0.6,
-        shadowRadius: 8,
-        flexDirection: "row",
-      }}
-    >
+    <View style={styles.conteiner}>
       <TextInput
         placeholder="Sök"
         placeholderTextColor="#DDB58E"
@@ -35,7 +28,10 @@ const SearchBarComponent = () => {
         }}
       />
       <View style={styles.lineNearIcon}></View>
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => searchButton()}
+      >
         <Ionicons name="search" size={30} color="#DDB58E" />
       </TouchableOpacity>
     </View>
@@ -45,6 +41,21 @@ const SearchBarComponent = () => {
 export default SearchBarComponent;
 
 const styles = StyleSheet.create({
+  conteiner: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    width: "85%",
+    height: 50,
+    marginBottom: 20,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#DDB58E",
+    alignSelf: "center",
+    shadowColor: "grey",
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    flexDirection: "row",
+  },
   iconContainer: {
     width: 55,
     height: "100%",
