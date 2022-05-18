@@ -5,7 +5,12 @@ import AppStyles from '../styles/AppStyles'
 const LoginButton = ({ text, onPress }) => {
 	return (
 		<View
-			style={[styles.loginView, AppStyles.shadow, AppStyles.greyBackground, AppStyles.border]}
+			style={[
+				styles.loginView,
+				AppStyles.shadow,
+				AppStyles.greyBackground,
+				AppStyles.border,
+			]}
 		>
 			<TouchableOpacity onPress={onPress}>
 				<Text style={[styles.textStyle, AppStyles.buttonText]}>{text}</Text>

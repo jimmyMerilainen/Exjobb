@@ -26,6 +26,8 @@ export default StyleSheet.create({
 	/*  Colors  */
 	goldColor: { color: '#DDB58E' },
 	greyBackground: { backgroundColor: 'rgba(196, 196, 196, 0.6)' },
+	greyColor: { color: 'rgba(196, 196, 196, 0.6)' },
+	whiteColor: { color: 'white' },
 
 	/* Shadow */
 	shadow: {
