@@ -1,12 +1,30 @@
-import { StyleSheet } from 'react-native'
+import { View } from 'react-native'
+import { useLayoutEffect, useState } from 'react'
 import 'react-native-gesture-handler'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 import Navigation from './navigation/Navigation'
+import { auth } from './firebase'
+import LoginScreen from './components/screens/LoginScreen'
 import { GameProvider } from './context/GameContext'
 
 export default function App() {
-  return (
+  const [isLogged, setIsLogged] = useState(false)
+
+  useLayoutEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('Logged in with: ', user.email)
+        setIsLogged(true)
+      } else {
+        setIsLogged(false)
+        console.log('No user')
+      }
+    })
+    return unsubscribe
+  }, [])
+
+  return isLogged ? (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
         <GameProvider>
@@ -14,5 +32,9 @@ export default function App() {
         </GameProvider>
       </SafeAreaView>
     </SafeAreaProvider>
+  ) : (
+    <View style={{ flex: 1 }}>
+      <LoginScreen />
+    </View>
   )
 }
