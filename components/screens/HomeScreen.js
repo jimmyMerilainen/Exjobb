@@ -10,7 +10,7 @@ import SearchBarComponent from '../SearchBarComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CourseCard from '../CourseCard'
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <ImageBackground
       style={{ flex: 1 }}
@@ -20,7 +20,7 @@ const HomeScreen = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <SearchBarComponent />
         <ScrollView keyboardDismissMode="on-drag">
-          <CourseCard />
+          <CourseCard navigation={navigation} />
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>

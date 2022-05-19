@@ -7,8 +7,10 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 import AppStyles from '../styles/AppStyles'
+import { useGameCheckFunction } from '../context/GameContext'
 
-const CourseCard = () => {
+const CourseCard = ({ navigation }) => {
+  const gameCheckContext = useGameCheckFunction()
   const [testarray, setTestarray] = useState([
     { name: 'Kode Golf', hols: '18 - hålsbana', info: 'Shop, Restaurang' },
     { name: 'S:t Jörgen Golf', hols: '18 - hålsbana', info: 'Range, Shop' },
@@ -17,7 +19,19 @@ const CourseCard = () => {
   return (
     <View style={{ flex: 1 }}>
       {testarray.map((course, index) => (
-        <TouchableOpacity index={index} key={index}>
+        <TouchableOpacity
+          index={index}
+          key={index}
+          disabled={gameCheckContext.gameStarted}
+          // onPress={() => {
+          //   navigation.navigate('Scorecard', {
+          //     courseName: course.name,
+          //   })
+          // }}
+          onPress={() => {
+            navigation.navigate('Scorecard')
+          }}
+        >
           <View style={styles.conteiner}>
             <ImageBackground
               style={styles.imageStyle}
