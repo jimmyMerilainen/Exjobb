@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, ImageBackground } from 'react-native'
+import { View, Text, ImageBackground, StyleSheet } from 'react-native'
 
 import AppStyles from '../../styles/AppStyles'
 import ButtonDefault from '../ButtonDefault'
@@ -41,7 +41,20 @@ const ScoreCardScreen = ({ navigation }) => {
             />
           </View>
         ) : (
-          <ButtonDefault text="Avsluta spel" onPress={endGame} />
+          <View>
+            <View style={[styles.scoreCardView, AppStyles.border]}>
+              <View style={[styles.infoLine, AppStyles.border]}>
+                <Text style={AppStyles.h3}>Hål</Text>
+                <View style={styles.line}></View>
+                <Text style={AppStyles.h3}>TEE</Text>
+                <View style={styles.line}></View>
+                <Text style={AppStyles.h3}>Par</Text>
+                <View style={styles.line}></View>
+                <Text style={AppStyles.h3}>Slag</Text>
+              </View>
+            </View>
+            <ButtonDefault text="Avsluta spel" onPress={endGame} />
+          </View>
         )}
       </View>
     </ImageBackground>
@@ -49,3 +62,29 @@ const ScoreCardScreen = ({ navigation }) => {
 }
 
 export default ScoreCardScreen
+
+const styles = StyleSheet.create({
+  scoreCardView: {
+    // flex: 1,
+    // paddingTop: 5,
+    width: '85%',
+    height: 150,
+    marginBottom: 20,
+    // alignItems: 'center',
+    alignSelf: 'center',
+    // justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  infoLine: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  line: {
+    width: 1,
+    height: 30,
+    borderLeftWidth: 1,
+    borderColor: '#DDB58E',
+    opacity: 0.18,
+  },
+})

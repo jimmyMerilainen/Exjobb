@@ -12,6 +12,7 @@ const SearchBarComponent = () => {
   const [wordToSearch, setWordToSearch] = useState('')
 
   const searchButton = () => {
+    console.log(wordToSearch)
     Keyboard.dismiss()
   }
   return (
