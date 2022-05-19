@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import {
 	Ionicons,
 	MaterialIcons,
@@ -6,7 +6,10 @@ import {
 } from '@expo/vector-icons'
 import AppStyles from '../styles/AppStyles'
 
-import { NavigationContainer } from '@react-navigation/native'
+import {
+	NavigationContainer,
+	getFocusedRouteNameFromRoute,
+} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
@@ -24,6 +27,14 @@ const ProfileStackScreen = () => {
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="Profil Sida" component={ProfileScreen} />
 			<Stack.Screen name="Inställningar" component={SettingsScreen} />
+		</Stack.Navigator>
+	)
+}
+const LoginStackScreen = () => {
+	return (
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
+			<Stack.Screen name="Login" component={LoginScreen} />
+			<Stack.Screen name="Landing" component={HomeScreen} />
 		</Stack.Navigator>
 	)
 }
@@ -46,19 +57,6 @@ const BottomTabNavigator = () => {
 				},
 			}}
 		>
-			<Tab.Screen
-				name="Login"
-				component={LoginScreen}
-				options={{
-					tabBarIcon: ({ focused }) => (
-						<MaterialIcons
-							name="login"
-							size={24}
-							color={focused ? 'white' : 'grey'}
-						/>
-					),
-				}}
-			/>
 			<Tab.Screen
 				name="Hem"
 				component={HomeScreen}
