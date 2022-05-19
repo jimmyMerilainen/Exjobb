@@ -39,6 +39,9 @@ export default StyleSheet.create({
 		backgroundColor: 'white',
 		tintColor: 'white',
 	},
+	warning: {
+		color: '#C41E3D',
+	},
 
 	/* Shadow */
 	shadow: {
