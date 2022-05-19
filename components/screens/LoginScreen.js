@@ -10,10 +10,12 @@ import { auth } from '../../firebase'
 
 import ButtonDefault from '../ButtonDefault'
 import TextInputDefault from '../TextInputDefault'
+import ChangeErrorText from '../ChangeErrorText'
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState()
 	const [password, setPassword] = useState()
+	const [errorMessage, setErrorMessage] = useState()
 
 	const handleCreateAccount = () => {
 		createUserWithEmailAndPassword(auth, email, password)
@@ -23,6 +25,7 @@ const LoginScreen = () => {
 			})
 			.catch((error) => {
 				console.log(error.message)
+				setErrorMessage(error.message)
 			})
 	}
 	const handleSignIn = () => {
@@ -33,6 +36,7 @@ const LoginScreen = () => {
 			})
 			.catch((error) => {
 				console.log(error.message)
+				setErrorMessage(error.message)
 			})
 	}
 
@@ -62,6 +66,7 @@ const LoginScreen = () => {
 				/>
 
 				<View style={{ width: '80%', alignSelf: 'center' }}>
+					{errorMessage && <ChangeErrorText text={errorMessage} />}
 					<Text style={AppStyles.h3}>
 						Konto sedan tidigare?{'\n'}Logga in ovan för att ladda dina
 						uppgifter
