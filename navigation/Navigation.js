@@ -41,14 +41,6 @@ const HomeStackScreen = () => {
     </Stack.Navigator>
   )
 }
-const LoginStackScreen = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Landing" component={HomeScreen} />
-    </Stack.Navigator>
-  )
-}
 
 const BottomTabNavigator = () => {
   const gameCheckContext = useGameCheckFunction()
@@ -97,19 +89,6 @@ const BottomTabNavigator = () => {
           }}
         />
       )}
-      {/* <Tab.Screen
-				name="Scorecard"
-				component={ScoreCardScreen}
-				options={{
-					tabBarIcon: ({ focused }) => (
-						<MaterialCommunityIcons
-							name="scoreboard-outline"
-							size={24}
-							color={focused ? 'white' : 'grey'}
-						/>
-					),
-				}}
-			/> */}
       <Tab.Screen
         name="Profil"
         component={ProfileStackScreen}

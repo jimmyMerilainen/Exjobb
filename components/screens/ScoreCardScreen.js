@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
-import { View, Text, ImageBackground, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  TextInput,
+} from 'react-native'
 
 import AppStyles from '../../styles/AppStyles'
 import ButtonDefault from '../ButtonDefault'
@@ -9,6 +15,17 @@ const ScoreCardScreen = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
   // const { courseName } = route.params
   const [showRightButton, setShowRightButton] = useState(false)
+  const [testArray, setTestArray] = useState(
+    { hole: 1, tee: 'Gul', par: 3, strokes: null },
+    { hole: 2, tee: 'Gul', par: 4, strokes: null },
+    { hole: 3, tee: 'Gul', par: 3, strokes: null },
+    { hole: 4, tee: 'Gul', par: 5, strokes: null },
+    { hole: 5, tee: 'Gul', par: 4, strokes: null },
+    { hole: 6, tee: 'Gul', par: 4, strokes: null },
+    { hole: 7, tee: 'Gul', par: 3, strokes: null },
+    { hole: 8, tee: 'Gul', par: 4, strokes: null },
+    { hole: 9, tee: 'Gul', par: 5, strokes: null }
+  )
 
   const startGame = () => {
     setShowRightButton(true)
@@ -52,6 +69,21 @@ const ScoreCardScreen = ({ navigation }) => {
                 <View style={styles.line}></View>
                 <Text style={AppStyles.h3}>Slag</Text>
               </View>
+              {/* {testArray.map((game, index) => (
+                <View
+                  index={index}
+                  key={index}
+                  style={[styles.infoLine, AppStyles.border]}
+                >
+                  <Text style={AppStyles.h3}>{game.hole}</Text>
+                  <View style={styles.line}></View>
+                  <Text style={AppStyles.h3}>{game.tee}</Text>
+                  <View style={styles.line}></View>
+                  <Text style={AppStyles.h3}>{game.par}</Text>
+                  <View style={styles.line}></View>
+                  <TextInput placeholder="?"></TextInput>
+                </View>
+              ))} */}
             </View>
             <ButtonDefault text="Avsluta spel" onPress={endGame} />
           </View>
@@ -84,7 +116,8 @@ const styles = StyleSheet.create({
     width: 1,
     height: 30,
     borderLeftWidth: 1,
-    borderColor: '#DDB58E',
+    borderColor: '#96C2A8',
+    // borderColor: '#DDB58E',
     opacity: 0.18,
   },
 })
