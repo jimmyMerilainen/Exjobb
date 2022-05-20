@@ -9,32 +9,32 @@ import LoginScreen from './components/screens/LoginScreen'
 import { GameProvider } from './context/GameContext'
 
 export default function App() {
-  const [isLogged, setIsLogged] = useState(false)
+	const [isLogged, setIsLogged] = useState(false)
 
-  useLayoutEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLogged(true)
-        console.log('Logged in with: ', user.email)
-      } else {
-        setIsLogged(false)
-        console.log('No user')
-      }
-    })
-    return unsubscribe
-  }, [])
+	useLayoutEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged((user) => {
+			if (user) {
+				setIsLogged(true)
+				console.log('Logged in with: ', user.email)
+			} else {
+				setIsLogged(false)
+				console.log('No user')
+			}
+		})
+		return unsubscribe
+	}, [])
 
-  return isLogged ? (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <GameProvider>
-          <Navigation />
-        </GameProvider>
-      </SafeAreaView>
-    </SafeAreaProvider>
-  ) : (
-    <View style={{ flex: 1 }}>
-      <LoginScreen />
-    </View>
-  )
+	return isLogged ? (
+		<SafeAreaProvider>
+			<SafeAreaView style={{ flex: 1 }}>
+				<GameProvider>
+					<Navigation />
+				</GameProvider>
+			</SafeAreaView>
+		</SafeAreaProvider>
+	) : (
+		<View style={{ flex: 1 }}>
+			<LoginScreen />
+		</View>
+	)
 }

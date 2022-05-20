@@ -2,32 +2,19 @@ import React, { useState } from 'react'
 import { View, Text, ImageBackground, StyleSheet } from 'react-native'
 import AppStyles from '../../styles/AppStyles'
 
-import {
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
-} from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase'
 
 import ButtonDefault from '../ButtonDefault'
 import TextInputDefault from '../TextInputDefault'
 import ChangeErrorText from '../ChangeErrorText'
+import RegisterOverlay from '../RegisterOverlay'
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState()
 	const [password, setPassword] = useState()
 	const [errorMessage, setErrorMessage] = useState()
 
-	const handleCreateAccount = () => {
-		createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				const user = userCredential.user
-				console.log('Account created with email: ', user.email)
-			})
-			.catch((error) => {
-				console.log(error.message)
-				setErrorMessage(error.message)
-			})
-	}
 	const handleSignIn = () => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
@@ -58,13 +45,8 @@ const LoginScreen = () => {
 						handleSignIn()
 					}}
 				/>
-				<ButtonDefault
-					text="Registrera"
-					onPress={() => {
-						handleCreateAccount()
-					}}
-				/>
 
+				<RegisterOverlay />
 				<View style={{ width: '80%', alignSelf: 'center' }}>
 					{errorMessage && <ChangeErrorText text={errorMessage} />}
 					<Text style={AppStyles.h3}>
