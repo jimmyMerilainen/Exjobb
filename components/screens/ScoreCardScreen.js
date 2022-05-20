@@ -1,42 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
   ImageBackground,
   StyleSheet,
   TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native'
 
 import AppStyles from '../../styles/AppStyles'
 import ButtonDefault from '../ButtonDefault'
 import { useGameCheckFunction } from '../../context/GameContext'
+import Dropdown from '../Dropdown'
 
 const ScoreCardScreen = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
   // const { courseName } = route.params
-  const [showRightButton, setShowRightButton] = useState(false)
-  const [testArray, setTestArray] = useState(
-    { hole: 1, tee: 'Gul', par: 3, strokes: null },
-    { hole: 2, tee: 'Gul', par: 4, strokes: null },
-    { hole: 3, tee: 'Gul', par: 3, strokes: null },
-    { hole: 4, tee: 'Gul', par: 5, strokes: null },
-    { hole: 5, tee: 'Gul', par: 4, strokes: null },
-    { hole: 6, tee: 'Gul', par: 4, strokes: null },
-    { hole: 7, tee: 'Gul', par: 3, strokes: null },
-    { hole: 8, tee: 'Gul', par: 4, strokes: null },
-    { hole: 9, tee: 'Gul', par: 5, strokes: null }
-  )
+  const [tee, setTee] = useState(null)
+  const [hole, setHole] = useState(null)
+  const [scoreCard, setScoreCard] = useState([])
 
   const startGame = () => {
-    setShowRightButton(true)
+    let array = []
+    for (let index = 1; index <= hole; index++) {
+      const data = { hole: index, tee: tee, par: 3, strokes: null }
+
+      array.push(data)
+    }
+
+    setScoreCard(array)
     gameCheckContext.setGameStarted(true)
-    navigation.goBack()
+    // navigation.goBack()
   }
 
   const endGame = () => {
-    setShowRightButton(false)
     gameCheckContext.setGameStarted(false)
     navigation.navigate('Home')
+  }
+
+  const selectTee = (data) => {
+    setTee(data)
+  }
+  const selectHole = (data) => {
+    setHole(data)
   }
 
   return (
@@ -51,42 +58,60 @@ const ScoreCardScreen = ({ navigation }) => {
         </Text>
         {!gameCheckContext.gameStarted ? (
           <View>
-            <ButtonDefault text="Starta spel" onPress={startGame} />
+            <View style={styles.viewForDropdown}>
+              <Dropdown
+                placeholderDd={'Välj TEE'}
+                DpArray={['Röd', 'Blå', 'Gul', 'Vit']}
+                callBack={selectTee}
+              />
+              <Dropdown
+                placeholderDd={'Antal hål'}
+                DpArray={[9, 18]}
+                callBack={selectHole}
+              />
+            </View>
+            {tee != null && hole != null && (
+              <ButtonDefault text="Starta spel" onPress={startGame} />
+            )}
             <ButtonDefault
               text="Tillbaka"
               onPress={() => navigation.goBack()}
             />
           </View>
         ) : (
-          <View>
-            <View style={[styles.scoreCardView, AppStyles.border]}>
-              <View style={[styles.infoLine, AppStyles.border]}>
-                <Text style={AppStyles.h3}>Hål</Text>
+          <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+            <ScrollView keyboardDismissMode="on-drag">
+              <View style={styles.scoreCard}>
+                <Text style={[AppStyles.h3, styles.box]}>Hål</Text>
                 <View style={styles.line}></View>
-                <Text style={AppStyles.h3}>TEE</Text>
+                <Text style={[AppStyles.h3, styles.box]}>TEE</Text>
                 <View style={styles.line}></View>
-                <Text style={AppStyles.h3}>Par</Text>
+                <Text style={[AppStyles.h3, styles.box]}>Par</Text>
                 <View style={styles.line}></View>
-                <Text style={AppStyles.h3}>Slag</Text>
+                <Text style={[AppStyles.h3, styles.box2]}>Slag</Text>
               </View>
-              {/* {testArray.map((game, index) => (
-                <View
-                  index={index}
-                  key={index}
-                  style={[styles.infoLine, AppStyles.border]}
-                >
-                  <Text style={AppStyles.h3}>{game.hole}</Text>
-                  <View style={styles.line}></View>
-                  <Text style={AppStyles.h3}>{game.tee}</Text>
-                  <View style={styles.line}></View>
-                  <Text style={AppStyles.h3}>{game.par}</Text>
-                  <View style={styles.line}></View>
-                  <TextInput placeholder="?"></TextInput>
-                </View>
-              ))} */}
-            </View>
-            <ButtonDefault text="Avsluta spel" onPress={endGame} />
-          </View>
+
+              <View style={{ marginBottom: 20 }}>
+                {scoreCard.map((game, index) => (
+                  <View index={index} key={index} style={styles.scoreCard}>
+                    <Text style={[AppStyles.h3, styles.box]}>{game.hole}</Text>
+                    <View style={styles.line}></View>
+                    <Text style={[AppStyles.h3, styles.box]}>{game.tee}</Text>
+                    <View style={styles.line}></View>
+                    <Text style={[AppStyles.h3, styles.box]}>{game.par}</Text>
+                    <View style={styles.line}></View>
+                    <TextInput
+                      style={[AppStyles.h3, styles.box2]}
+                      placeholder="-"
+                      keyboardType="number-pad"
+                    ></TextInput>
+                  </View>
+                ))}
+              </View>
+
+              <ButtonDefault text="Avsluta spel" onPress={endGame} />
+            </ScrollView>
+          </KeyboardAvoidingView>
         )}
       </View>
     </ImageBackground>
@@ -96,28 +121,37 @@ const ScoreCardScreen = ({ navigation }) => {
 export default ScoreCardScreen
 
 const styles = StyleSheet.create({
-  scoreCardView: {
-    // flex: 1,
-    // paddingTop: 5,
-    width: '85%',
-    height: 150,
-    marginBottom: 20,
-    // alignItems: 'center',
-    alignSelf: 'center',
-    // justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-  infoLine: {
+  scoreCard: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
+    backgroundColor: 'white',
+    width: '85%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#DDB58E',
   },
   line: {
     width: 1,
     height: 30,
     borderLeftWidth: 1,
-    borderColor: '#96C2A8',
-    // borderColor: '#DDB58E',
+    borderColor: '#DDB58E',
     opacity: 0.18,
+  },
+  box: {
+    margin: 4,
+    width: '15%',
+    height: '65%',
+  },
+  box2: {
+    margin: 4,
+    width: '40%',
+    height: '75%',
+  },
+  viewForDropdown: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    width: '85%',
   },
 })
