@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		fontSize: 50,
 	},
 	h2: {
-		fontSize: 22,
+		fontSize: 24,
 	},
 	h3: {
 		fontSize: 16,
