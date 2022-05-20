@@ -59,23 +59,7 @@ const RegisterOverlay = ({ handleOnPress }) => {
 						setModalVisible(!modalVisible)
 					}}
 				>
-					<View
-						style={[
-							{
-								height: 550,
-								justifyContent: 'center',
-								alignContent: 'center',
-								alignItems: 'center',
-								marginTop: 22,
-								marginBottom: 100,
-								width: '85%',
-								backgroundColor: 'white',
-								alignSelf: 'center',
-							},
-							AppStyles.border,
-							AppStyles.shadow,
-						]}
-					>
+					<View style={[styles.modalView, AppStyles.border, AppStyles.shadow]}>
 						<Text style={[styles.modalText, AppStyles.h1, {}]}>
 							Skapa Konto
 						</Text>
@@ -120,17 +104,16 @@ const RegisterOverlay = ({ handleOnPress }) => {
 }
 
 const styles = StyleSheet.create({
-	textStyle: {
-		color: '#FFFFFF',
-		flex: 1,
-		padding: 10,
-		marginLeft: 5,
-	},
-	centeredView: {
-		flex: 1,
+	modalView: {
+		height: 550,
 		justifyContent: 'center',
+		alignContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
+		marginBottom: 100,
+		width: '85%',
+		backgroundColor: 'white',
+		alignSelf: 'center',
 	},
 	registerView: {
 		width: '85%',
@@ -139,22 +122,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		alignSelf: 'center',
 		justifyContent: 'center',
-	},
-	modalView: {
-		flex: 1,
-		margin: 20,
-		backgroundColor: 'white',
-		borderRadius: 20,
-		padding: 35,
-		alignItems: 'center',
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 4,
-		elevation: 5,
 	},
 	textStyle: {
 		color: 'white',
