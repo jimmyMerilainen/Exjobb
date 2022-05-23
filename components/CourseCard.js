@@ -8,35 +8,38 @@ import {
 import React, { useState, useEffect } from 'react'
 import AppStyles from '../styles/AppStyles'
 import { useGameCheckFunction } from '../context/GameContext'
+import Images from '../Images'
 
-import { auth, db } from '../firebase'
-import { doc, setDoc, getDocs, QuerySnapshot, getDoc } from 'firebase/firestore'
+import { db } from '../firebase'
+import { getDocs, collection } from 'firebase/firestore'
 
 const CourseCard = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
-  const [testarray, setTestarray] = useState([])
+  const [courseArray, setCourseArray] = useState([])
 
   useEffect(() => {
-    // const test = db.collection('golfcourses').get()
-    // .then((doc) => {
-    //   doc.forEach((course) => {
-    //     setTestarray(course)
-    //   })
-    // })
-    const testarigen = async () => {
-      const getCourses = doc(db, 'golfcourses', 'DJ9tzGnEfbMdFGzefCeR')
-      // console.log('!!!!!', getCourses.data)
-      await getDoc(getCourses).then((snap) => {
-        console.log(snap.data())
-        // setTestarray(snap.data())
+    const tempArray = []
+    const getCourse = async () => {
+      const query = await getDocs(collection(db, 'golfcourses'))
+      query.forEach((doc) => {
+        console.log(doc.data())
+        tempArray.push(doc.data())
       })
+      setCourseArray(tempArray)
     }
-    testarigen()
+
+    getCourse()
   }, [])
+
+  const setRightImages = (courseImage) => {
+    for (let index = 0; index < Images.length; index++) {
+      if (courseImage === Images[index].name) return Images[index].image
+    }
+  }
 
   return (
     <View style={{ flex: 1 }}>
-      {testarray.map((course, index) => (
+      {courseArray.map((course, index) => (
         <TouchableOpacity
           index={index}
           key={index}
@@ -53,16 +56,18 @@ const CourseCard = ({ navigation }) => {
           <View style={styles.conteiner}>
             <ImageBackground
               style={styles.imageStyle}
-              source={require('../assets/images/golfCourse.jpg')}
+              source={setRightImages(course.image)}
               resizeMode="cover"
             >
               <View style={styles.viewInsideCard}>
                 <Text style={[AppStyles.h2, styles.textInsideCard]}>
                   {course.name}
                 </Text>
-                <Text style={[styles.textInsideCard]}>{course.hols}</Text>
                 <Text style={[styles.textInsideCard]}>
-                  Övrigt: {course.info}
+                  {course.holes}-hålsbana
+                </Text>
+                <Text style={[styles.textInsideCard]}>
+                  Övrigt: {course.information}
                 </Text>
               </View>
             </ImageBackground>
