@@ -5,7 +5,6 @@ import UserAvatar from 'react-native-user-avatar'
 
 import AppStyles from '../../styles/AppStyles'
 import HistoryFlatlist from '../HistoryFlatlist'
-import HistoryButton from '../HistoryButton'
 
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
@@ -67,10 +66,7 @@ const ProfileScreen = ({ navigation }) => {
 				</View>
 				<View
 					style={{
-						marginTop: 30,
-						width: '85%',
-						justifyContent: 'center',
-						alignSelf: 'center',
+						flex: 1,
 					}}
 				>
 					<HistoryFlatlist />
