@@ -5,16 +5,34 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AppStyles from '../styles/AppStyles'
 import { useGameCheckFunction } from '../context/GameContext'
 
+import { auth, db } from '../firebase'
+import { doc, setDoc, getDocs, QuerySnapshot, getDoc } from 'firebase/firestore'
+
 const CourseCard = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
-  const [testarray, setTestarray] = useState([
-    { name: 'Kode Golf', hols: '18 - hålsbana', info: 'Shop, Restaurang' },
-    { name: 'S:t Jörgen Golf', hols: '18 - hålsbana', info: 'Range, Shop' },
-  ])
+  const [testarray, setTestarray] = useState([])
+
+  useEffect(() => {
+    // const test = db.collection('golfcourses').get()
+    // .then((doc) => {
+    //   doc.forEach((course) => {
+    //     setTestarray(course)
+    //   })
+    // })
+    const testarigen = async () => {
+      const getCourses = doc(db, 'golfcourses', 'DJ9tzGnEfbMdFGzefCeR')
+      // console.log('!!!!!', getCourses.data)
+      await getDoc(getCourses).then((snap) => {
+        console.log(snap.data())
+        // setTestarray(snap.data())
+      })
+    }
+    testarigen()
+  }, [])
 
   return (
     <View style={{ flex: 1 }}>
