@@ -14,12 +14,16 @@ import ButtonDefault from '../ButtonDefault'
 import { useGameCheckFunction } from '../../context/GameContext'
 import Dropdown from '../Dropdown'
 
+import { auth, db } from '../../firebase'
+import { getDocs, collection, setDoc, query, where } from 'firebase/firestore'
+
 const ScoreCardScreen = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
   // const { courseName } = route.params
   const [tee, setTee] = useState(null)
   const [hole, setHole] = useState(null)
   const [scoreCard, setScoreCard] = useState([])
+  const [stroke, setStroke] = useState(null)
 
   const startGame = () => {
     let array = []
@@ -34,7 +38,22 @@ const ScoreCardScreen = ({ navigation }) => {
     // navigation.goBack()
   }
 
-  const endGame = () => {
+  const endGame = async () => {
+    console.log('ID: ', auth.currentUser.uid)
+    // const coll = await getDocs(
+    //   collection(db, 'users').where(
+    //     auth.currentUser.uid,
+    //     '==',
+    //     auth.currentUser.uid
+    //   )
+    // )
+
+    // const newHistory = {
+    //   history: { date: new Date(), hole: 1, par: 3, strokes: 3, tee: 'gul' },
+    // }
+
+    // setDoc(coll, newHistory)
+
     gameCheckContext.setGameStarted(false)
     navigation.navigate('Home')
   }
@@ -45,6 +64,15 @@ const ScoreCardScreen = ({ navigation }) => {
   const selectHole = (data) => {
     setHole(data)
   }
+
+  // const setRightStrike = (hole, stroke) => {
+  //   for (let index = 0; index < scoreCard.length; index++) {
+  //     if (scoreCard[index].hole === hole) {
+  //       // scoreCard[index].strokes = stroke
+  //       console.log(stroke)
+  //     }
+  //   }
+  // }
 
   return (
     <ImageBackground
@@ -104,7 +132,9 @@ const ScoreCardScreen = ({ navigation }) => {
                       style={[AppStyles.h3, styles.box2]}
                       placeholder="-"
                       keyboardType="number-pad"
-                    ></TextInput>
+                      // onChangeText={setStroke}
+                      // value={stroke}
+                    />
                   </View>
                 ))}
               </View>
