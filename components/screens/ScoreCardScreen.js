@@ -14,12 +14,17 @@ import ButtonDefault from '../ButtonDefault'
 import { useGameCheckFunction } from '../../context/GameContext'
 import Dropdown from '../Dropdown'
 
-const ScoreCardScreen = ({ navigation }) => {
+import { auth, db } from '../../firebase'
+import { updateDoc, arrayUnion, doc } from 'firebase/firestore'
+
+const ScoreCardScreen = ({ route, navigation }) => {
   const gameCheckContext = useGameCheckFunction()
-  // const { courseName } = route.params
+  const { courseName } = route.params
+
   const [tee, setTee] = useState(null)
   const [hole, setHole] = useState(null)
   const [scoreCard, setScoreCard] = useState([])
+  const [stroke, setStroke] = useState(null)
 
   const startGame = () => {
     let array = []
@@ -34,7 +39,16 @@ const ScoreCardScreen = ({ navigation }) => {
     // navigation.goBack()
   }
 
-  const endGame = () => {
+  const endGame = async () => {
+    const coll = doc(db, 'users', auth.currentUser.uid)
+    await updateDoc(coll, {
+      history: arrayUnion({
+        course: courseName,
+        date: new Date(),
+        scorecard: scoreCard,
+      }),
+    })
+
     gameCheckContext.setGameStarted(false)
     navigation.navigate('Home')
   }
@@ -45,6 +59,15 @@ const ScoreCardScreen = ({ navigation }) => {
   const selectHole = (data) => {
     setHole(data)
   }
+
+  // const setRightStrike = (hole, stroke) => {
+  //   for (let index = 0; index < scoreCard.length; index++) {
+  //     if (scoreCard[index].hole === hole) {
+  //       // scoreCard[index].strokes = stroke
+  //       console.log(stroke)
+  //     }
+  //   }
+  // }
 
   return (
     <ImageBackground
@@ -101,10 +124,13 @@ const ScoreCardScreen = ({ navigation }) => {
                     <Text style={[AppStyles.h3, styles.box]}>{game.par}</Text>
                     <View style={styles.line}></View>
                     <TextInput
+                      key={index}
                       style={[AppStyles.h3, styles.box2]}
                       placeholder="-"
                       keyboardType="number-pad"
-                    ></TextInput>
+                      // onChangeText={setStroke}
+                      // value={stroke}
+                    />
                   </View>
                 ))}
               </View>
