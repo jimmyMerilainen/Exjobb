@@ -15,11 +15,12 @@ import { useGameCheckFunction } from '../../context/GameContext'
 import Dropdown from '../Dropdown'
 
 import { auth, db } from '../../firebase'
-import { getDocs, collection, setDoc, query, where } from 'firebase/firestore'
+import { updateDoc, arrayUnion, doc } from 'firebase/firestore'
 
-const ScoreCardScreen = ({ navigation }) => {
+const ScoreCardScreen = ({ route, navigation }) => {
   const gameCheckContext = useGameCheckFunction()
-  // const { courseName } = route.params
+  const { courseName } = route.params
+
   const [tee, setTee] = useState(null)
   const [hole, setHole] = useState(null)
   const [scoreCard, setScoreCard] = useState([])
@@ -39,20 +40,14 @@ const ScoreCardScreen = ({ navigation }) => {
   }
 
   const endGame = async () => {
-    console.log('ID: ', auth.currentUser.uid)
-    // const coll = await getDocs(
-    //   collection(db, 'users').where(
-    //     auth.currentUser.uid,
-    //     '==',
-    //     auth.currentUser.uid
-    //   )
-    // )
-
-    // const newHistory = {
-    //   history: { date: new Date(), hole: 1, par: 3, strokes: 3, tee: 'gul' },
-    // }
-
-    // setDoc(coll, newHistory)
+    const coll = doc(db, 'users', auth.currentUser.uid)
+    await updateDoc(coll, {
+      history: arrayUnion({
+        course: courseName,
+        date: new Date(),
+        scorecard: scoreCard,
+      }),
+    })
 
     gameCheckContext.setGameStarted(false)
     navigation.navigate('Home')
@@ -129,6 +124,7 @@ const ScoreCardScreen = ({ navigation }) => {
                     <Text style={[AppStyles.h3, styles.box]}>{game.par}</Text>
                     <View style={styles.line}></View>
                     <TextInput
+                      key={index}
                       style={[AppStyles.h3, styles.box2]}
                       placeholder="-"
                       keyboardType="number-pad"

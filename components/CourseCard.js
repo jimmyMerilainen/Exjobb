@@ -44,14 +44,14 @@ const CourseCard = ({ navigation }) => {
           index={index}
           key={index}
           disabled={gameCheckContext.gameStarted}
-          // onPress={() => {
-          //   navigation.navigate('Scorecard', {
-          //     courseName: course.name,
-          //   })
-          // }}
           onPress={() => {
-            navigation.navigate('Scorecard')
+            navigation.navigate('Scorecard', {
+              courseName: course.name,
+            })
           }}
+          // onPress={() => {
+          //   navigation.navigate('Scorecard')
+          // }}
         >
           <View style={styles.conteiner}>
             <ImageBackground
