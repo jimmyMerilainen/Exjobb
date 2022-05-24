@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import AppStyles from '../styles/AppStyles'
 
-const HistoryButton = ({ date, course, holes, onPress, style }) => {
+const HistoryButton = ({ date, name, strokes, onPress, style }) => {
 	return (
 		<View
 			style={[
@@ -32,7 +32,7 @@ const HistoryButton = ({ date, course, holes, onPress, style }) => {
 								{ color: 'white', paddingLeft: 10 },
 							]}
 						>
-							{course ? course : ''}
+							{name ? name : ''}
 						</Text>
 						<Text
 							numberOfLines={1}
@@ -41,7 +41,7 @@ const HistoryButton = ({ date, course, holes, onPress, style }) => {
 								{ color: 'white', paddingLeft: 10 },
 							]}
 						>
-							{holes ? holes : ''}
+							{strokes ? strokes + ' Slag' : ''}
 						</Text>
 					</View>
 				</TouchableOpacity>
