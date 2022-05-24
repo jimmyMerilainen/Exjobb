@@ -13,7 +13,7 @@ import Images from '../Images'
 import { db } from '../firebase'
 import { getDocs, collection } from 'firebase/firestore'
 
-const CourseCard = ({ navigation }) => {
+const CourseCard = ({ navigation, searchWord }) => {
   const gameCheckContext = useGameCheckFunction()
   const [courseArray, setCourseArray] = useState([])
 
@@ -30,6 +30,24 @@ const CourseCard = ({ navigation }) => {
 
     getCourse()
   }, [])
+
+  useEffect(() => {
+    const tempArray = []
+    if (searchWord != '') {
+      console.log('!!!!!', searchWord)
+      for (let index = 0; index < courseArray.length; index++) {
+        if (
+          courseArray[index].name
+            .toLowerCase()
+            .includes(searchWord.toLowerCase())
+        ) {
+          //  var searchName = courseArray[index].name
+          tempArray.push(courseArray[index])
+        }
+      }
+      setCourseArray(tempArray)
+    }
+  }, [searchWord])
 
   const setRightImages = (courseImage) => {
     for (let index = 0; index < Images.length; index++) {

@@ -8,10 +8,11 @@ import {
 import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 
-const SearchBarComponent = () => {
+const SearchBarComponent = ({ callBack }) => {
   const [wordToSearch, setWordToSearch] = useState('')
 
   const searchButton = () => {
+    callBack(wordToSearch)
     console.log(wordToSearch)
     Keyboard.dismiss()
   }
@@ -29,10 +30,7 @@ const SearchBarComponent = () => {
         value={wordToSearch}
       />
       <View style={styles.lineNearIcon}></View>
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => searchButton()}
-      >
+      <TouchableOpacity style={styles.iconContainer} onPress={searchButton}>
         <Ionicons name="search" size={30} color="#DDB58E" />
       </TouchableOpacity>
     </View>
