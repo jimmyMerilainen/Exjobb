@@ -24,12 +24,12 @@ const ScoreCardScreen = ({ route, navigation }) => {
   const [tee, setTee] = useState(null)
   const [hole, setHole] = useState(null)
   const [scoreCard, setScoreCard] = useState([])
-  const [stroke, setStroke] = useState(null)
+  const [stroke, setStroke] = useState(false)
 
   const startGame = () => {
     let array = []
     for (let index = 1; index <= hole; index++) {
-      const data = { hole: index, tee: tee, par: 3, strokes: null }
+      const data = { hole: index, tee: tee, par: 3, strokes: 0 }
 
       array.push(data)
     }
@@ -60,14 +60,20 @@ const ScoreCardScreen = ({ route, navigation }) => {
     setHole(data)
   }
 
-  // const setRightStrike = (hole, stroke) => {
-  //   for (let index = 0; index < scoreCard.length; index++) {
-  //     if (scoreCard[index].hole === hole) {
-  //       // scoreCard[index].strokes = stroke
-  //       console.log(stroke)
-  //     }
-  //   }
-  // }
+  const setRightStrike = (hole, stroke) => {
+    for (let index = 0; index < scoreCard.length; index++) {
+      if (scoreCard[index].hole === hole) {
+        scoreCard[index].strokes = stroke
+      }
+    }
+    checkIfDone()
+  }
+
+  const checkIfDone = () => {
+    if (scoreCard.every((isTrue) => isTrue.strokes != 0)) {
+      setStroke(true)
+    }
+  }
 
   return (
     <ImageBackground
@@ -76,8 +82,18 @@ const ScoreCardScreen = ({ route, navigation }) => {
       resizeMode="cover"
     >
       <View style={AppStyles.container}>
-        <Text style={[AppStyles.h1, { textAlign: 'center', color: 'white' }]}>
-          Score kort
+        <Text
+          style={[
+            AppStyles.h1,
+            {
+              textAlign: 'center',
+              color: 'white',
+              width: '85%',
+              alignSelf: 'center',
+            },
+          ]}
+        >
+          {courseName}
         </Text>
         {!gameCheckContext.gameStarted ? (
           <View>
@@ -128,14 +144,18 @@ const ScoreCardScreen = ({ route, navigation }) => {
                       style={[AppStyles.h3, styles.box2]}
                       placeholder="-"
                       keyboardType="number-pad"
-                      // onChangeText={setStroke}
-                      // value={stroke}
+                      maxLength={2}
+                      onChangeText={(s) => setRightStrike(game.hole, s)}
                     />
                   </View>
                 ))}
               </View>
 
-              <ButtonDefault text="Avsluta spel" onPress={endGame} />
+              <ButtonDefault
+                text="Avsluta spel"
+                onPress={endGame}
+                disabled={!stroke}
+              />
             </ScrollView>
           </KeyboardAvoidingView>
         )}

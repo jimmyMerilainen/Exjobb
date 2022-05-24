@@ -22,7 +22,7 @@ const CourseCard = ({ navigation }) => {
     const getCourse = async () => {
       const query = await getDocs(collection(db, 'golfcourses'))
       query.forEach((doc) => {
-        console.log(doc.data())
+        // console.log(doc.data())
         tempArray.push(doc.data())
       })
       setCourseArray(tempArray)
