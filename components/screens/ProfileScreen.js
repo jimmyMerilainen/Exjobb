@@ -4,12 +4,11 @@ import { Ionicons } from '@expo/vector-icons'
 import UserAvatar from 'react-native-user-avatar'
 import { db, auth } from '../../firebase'
 import {
-	doc,
-	getDoc,
 	where,
 	query,
 	collection,
 	getDocs,
+	onSnapshot,
 } from 'firebase/firestore'
 
 import AppStyles from '../../styles/AppStyles'
@@ -18,13 +17,12 @@ import HistoryFlatlist from '../HistoryFlatlist'
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
 	const [playedRounds, setPlayedRounds] = useState([])
+	const userId = auth.currentUser.uid
 
 	const loadUser = async () => {
-		const userId = auth.currentUser.uid
 		let userHistory = []
 		const q = query(collection(db, 'users'), where('userId', '==', userId))
 		const querySnapshot = await getDocs(q)
-
 		querySnapshot.forEach((doc) => {
 			userHistory.push(doc.data())
 		})
@@ -37,6 +35,13 @@ const ProfileScreen = ({ navigation }) => {
 
 	useEffect(() => {
 		loadUser()
+	}, [playedRounds])
+
+	useEffect(() => {
+		const colRef = collection(db, 'users')
+		onSnapshot(colRef, (snapshot) => {
+			console.log('Updated!')
+		})
 	}, [])
 
 	return (
