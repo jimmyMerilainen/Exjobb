@@ -41,7 +41,7 @@ const HistoryButton = ({ date, name, strokes, onPress, style }) => {
 								{ color: 'white', paddingLeft: 10 },
 							]}
 						>
-							{strokes ? strokes : ''} Slag
+							{strokes ? strokes + ' Slag' : ''}
 						</Text>
 					</View>
 				</TouchableOpacity>

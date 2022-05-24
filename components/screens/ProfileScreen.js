@@ -19,7 +19,7 @@ const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
 	const [playedRounds, setPlayedRounds] = useState([])
 
-	const loadPlayedRounds = async () => {
+	const loadUser = async () => {
 		const userId = auth.currentUser.uid
 		let userHistory = []
 		const q = query(collection(db, 'users'), where('userId', '==', userId))
@@ -30,13 +30,13 @@ const ProfileScreen = ({ navigation }) => {
 		})
 
 		setUsername(userHistory[0].username)
-		if (userHistory[0].playedRounds !== undefined) {
-			setPlayedRounds(userHistory[0].playedRounds)
+		if (userHistory[0].history !== undefined) {
+			setPlayedRounds(userHistory[0].history)
 		}
 	}
 
 	useEffect(() => {
-		loadPlayedRounds()
+		loadUser()
 	}, [])
 
 	return (

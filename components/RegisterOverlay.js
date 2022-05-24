@@ -10,7 +10,7 @@ import {
 
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 
 import ButtonDefault from './ButtonDefault'
 import AppStyles from '../styles/AppStyles'
@@ -26,20 +26,14 @@ const RegisterOverlay = ({ handleOnPress }) => {
 
 	const handleCreateAccount = () => {
 		createUserWithEmailAndPassword(auth, email, password)
-			.then(() => {
-				try {
-					const docRef = addDoc(collection(db, 'users'), {
-						username: username,
-						email: email,
-						userId: auth.currentUser.uid,
-						playedRounds: [
-							{ date: '23 JUN', name: 'Kode Golf', strokes: 73, tee: 'gul' },
-						],
-					})
-					console.log('Document written with ID: ', docRef)
-				} catch (e) {
-					console.error('Error adding document: ', e)
-				}
+			.then((userCredential) => {
+				const user = userCredential.user
+				console.log('Account created with email: ', user.email)
+
+				const newUser = doc(db, 'users', user.uid)
+				const newUserData = { username: username, userId: user.uid }
+
+				setDoc(newUser, newUserData)
 			})
 			.catch((error) => {
 				console.log(error.message)
