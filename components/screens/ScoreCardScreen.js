@@ -19,7 +19,7 @@ import { updateDoc, arrayUnion, doc } from 'firebase/firestore'
 
 const ScoreCardScreen = ({ route, navigation }) => {
   const gameCheckContext = useGameCheckFunction()
-  const { courseName } = route.params
+  const { courseName, courseGuide } = route.params
 
   const [tee, setTee] = useState(null)
   const [hole, setHole] = useState(null)
@@ -28,8 +28,13 @@ const ScoreCardScreen = ({ route, navigation }) => {
 
   const startGame = () => {
     let array = []
-    for (let index = 1; index <= hole; index++) {
-      const data = { hole: index, tee: tee, par: 3, strokes: 0 }
+    for (let index = 0; index < hole; index++) {
+      const data = {
+        hole: courseGuide[index].hole,
+        tee: tee,
+        par: courseGuide[index].par,
+        strokes: 0,
+      }
 
       array.push(data)
     }
@@ -63,7 +68,7 @@ const ScoreCardScreen = ({ route, navigation }) => {
   const setRightStrike = (hole, stroke) => {
     for (let index = 0; index < scoreCard.length; index++) {
       if (scoreCard[index].hole === hole) {
-        scoreCard[index].strokes = stroke
+        scoreCard[index].strokes = parseInt(stroke)
       }
     }
     checkIfDone()

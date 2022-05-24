@@ -47,6 +47,7 @@ const CourseCard = ({ navigation }) => {
           onPress={() => {
             navigation.navigate('Scorecard', {
               courseName: course.name,
+              courseGuide: course.courseguide,
             })
           }}
           // onPress={() => {
