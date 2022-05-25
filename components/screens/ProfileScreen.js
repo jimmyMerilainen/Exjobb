@@ -17,11 +17,13 @@ import HistoryFlatlist from '../HistoryFlatlist'
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
 	const [playedRounds, setPlayedRounds] = useState([])
-	const userId = auth.currentUser.uid
 
 	const loadUser = async () => {
 		let userHistory = []
-		const q = query(collection(db, 'users'), where('userId', '==', userId))
+		const q = query(
+			collection(db, 'users'),
+			where('userId', '==', auth.currentUser.uid),
+		)
 		const querySnapshot = await getDocs(q)
 		querySnapshot.forEach((doc) => {
 			userHistory.push(doc.data())
@@ -34,13 +36,9 @@ const ProfileScreen = ({ navigation }) => {
 	}
 
 	useEffect(() => {
-		loadUser()
-	}, [playedRounds])
-
-	useEffect(() => {
 		const colRef = collection(db, 'users')
 		onSnapshot(colRef, (snapshot) => {
-			console.log('Updated!')
+			loadUser()
 		})
 	}, [])
 
