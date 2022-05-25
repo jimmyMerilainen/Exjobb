@@ -3,6 +3,8 @@ import { View, Text, FlatList } from 'react-native'
 import HistoryButton from './HistoryButton'
 import HistoryScoreCard from './HistoryScoreCard'
 import AppStyles from '../styles/AppStyles'
+import { doc, updateDoc, arrayRemove } from 'firebase/firestore'
+import { auth, db } from '../firebase'
 
 const HistoryFlatlist = ({ data }) => {
 	const [modalVisible, setModalVisible] = useState(false)
@@ -52,9 +54,15 @@ const HistoryFlatlist = ({ data }) => {
 		return strokes
 	}
 
-	const openModalwithItem = (item) => {
-		setItemToChild(item)
+	const openModalwithItem = (playedRound) => {
+		setItemToChild(playedRound)
 		setModalVisible(!modalVisible)
+	}
+	const deleteRoundFromHistory = async (item) => {
+		const userRef = doc(db, 'users', auth.currentUser.uid)
+		await updateDoc(userRef, {
+			history: arrayRemove(item),
+		})
 	}
 
 	return (
@@ -100,6 +108,7 @@ const HistoryFlatlist = ({ data }) => {
 			/>
 			{modalVisible ? (
 				<HistoryScoreCard
+					deleteItem={deleteRoundFromHistory}
 					data={itemToChild}
 					modalVisible={modalVisible}
 					setModalVisible={setModalVisible}

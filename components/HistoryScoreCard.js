@@ -4,7 +4,12 @@ import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native'
 import AppStyles from '../styles/AppStyles'
 import ButtonDefault from './ButtonDefault'
 
-const HistoryScoreCard = ({ data, modalVisible, setModalVisible }) => {
+const HistoryScoreCard = ({
+	data,
+	modalVisible,
+	setModalVisible,
+	deleteItem,
+}) => {
 	let game = data.scorecard
 	let courseName = data.course
 
@@ -59,6 +64,13 @@ const HistoryScoreCard = ({ data, modalVisible, setModalVisible }) => {
 					</View>
 				</ScrollView>
 				<View style={[{ marginTop: 20, marginBottom: 20, width: '100%' }]}>
+					<ButtonDefault
+						text="Radera Scorekort"
+						onPress={() => {
+							deleteItem(data)
+							setModalVisible(!modalVisible)
+						}}
+					/>
 					<ButtonDefault
 						text="Tillbaka"
 						onPress={() => {
