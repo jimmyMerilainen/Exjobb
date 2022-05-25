@@ -47,6 +47,7 @@ const LoginScreen = () => {
 				/>
 
 				<RegisterOverlay />
+
 				<View style={{ width: '80%', alignSelf: 'center' }}>
 					{errorMessage && <ChangeErrorText text={errorMessage} />}
 					<Text style={AppStyles.h3}>

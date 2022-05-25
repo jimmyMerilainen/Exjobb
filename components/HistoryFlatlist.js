@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, FlatList } from 'react-native'
 import HistoryButton from './HistoryButton'
+import HistoryScoreCard from './HistoryScoreCard'
 import AppStyles from '../styles/AppStyles'
 
 const HistoryFlatlist = ({ data }) => {
+	const [modalVisible, setModalVisible] = useState(false)
+	const [itemToChild, setItemToChild] = useState()
 	const months = [
 		'Jan',
 		'Feb',
@@ -49,6 +52,11 @@ const HistoryFlatlist = ({ data }) => {
 		return strokes
 	}
 
+	const openModalwithItem = (item) => {
+		setItemToChild(item)
+		setModalVisible(!modalVisible)
+	}
+
 	return (
 		<View
 			style={{
@@ -85,11 +93,18 @@ const HistoryFlatlist = ({ data }) => {
 						strokes={calculateStrokes(item.scorecard)}
 						style={{ margin: 8 }}
 						onPress={() => {
-							console.log(item)
+							openModalwithItem(item)
 						}}
 					/>
 				)}
 			/>
+			{modalVisible ? (
+				<HistoryScoreCard
+					data={itemToChild}
+					modalVisible={modalVisible}
+					setModalVisible={setModalVisible}
+				/>
+			) : null}
 		</View>
 	)
 }

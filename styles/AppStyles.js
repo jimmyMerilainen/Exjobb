@@ -55,4 +55,56 @@ export default StyleSheet.create({
 		borderColor: '#DDB58E',
 		borderRadius: 15,
 	},
+	/* Scorecard */
+	scoreCard: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: 'white',
+		width: '85%',
+		alignSelf: 'center',
+		justifyContent: 'center',
+		borderWidth: 1,
+		borderColor: '#DDB58E',
+	},
+	line: {
+		width: 1,
+		height: 30,
+		borderLeftWidth: 1,
+		borderColor: '#DDB58E',
+		opacity: 0.18,
+	},
+	box: {
+		margin: 4,
+		width: '15%',
+		height: '65%',
+	},
+	box2: {
+		margin: 4,
+		width: '40%',
+		height: '75%',
+	},
+	/* Modal Overlay */
+	modalView: {
+		height: 550,
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+		marginTop: 22,
+		marginBottom: 100,
+		width: '85%',
+		backgroundColor: 'white',
+		alignSelf: 'center',
+	},
+	modalText: {
+		marginBottom: 15,
+		textAlign: 'center',
+	},
+	registerView: {
+		width: '85%',
+		height: 50,
+		marginBottom: 20,
+		alignItems: 'center',
+		alignSelf: 'center',
+		justifyContent: 'center',
+	},
 })
