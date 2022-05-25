@@ -1,27 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  ScrollView,
-} from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { ImageBackground, ScrollView } from 'react-native'
+import React from 'react'
 import SearchBarComponent from '../SearchBarComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CourseCard from '../CourseCard'
 
 const HomeScreen = ({ navigation }) => {
-  const [searchWord, setSearchWord] = useState('')
-
-  const wordToSearch = (data) => {
-    console.log('homescreen', data)
-    setSearchWord(data)
-  }
-
-  // useEffect(() => {
-  //   console.log('homescreen', wordToSearch)
-  // }, [wordToSearch])
-
   return (
     <ImageBackground
       style={{ flex: 1 }}
@@ -29,9 +12,9 @@ const HomeScreen = ({ navigation }) => {
       resizeMode="cover"
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <SearchBarComponent callBack={wordToSearch} />
+        <SearchBarComponent />
         <ScrollView keyboardDismissMode="on-drag">
-          <CourseCard navigation={navigation} searchWord={searchWord} />
+          <CourseCard navigation={navigation} />
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>
@@ -39,5 +22,3 @@ const HomeScreen = ({ navigation }) => {
 }
 
 export default HomeScreen
-
-const styles = StyleSheet.create({})

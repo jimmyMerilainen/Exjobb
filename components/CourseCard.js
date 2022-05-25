@@ -13,7 +13,7 @@ import Images from '../Images'
 import { db } from '../firebase'
 import { getDocs, collection } from 'firebase/firestore'
 
-const CourseCard = ({ navigation, searchWord }) => {
+const CourseCard = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
   const [courseArray, setCourseArray] = useState([])
 
@@ -22,32 +22,14 @@ const CourseCard = ({ navigation, searchWord }) => {
     const getCourse = async () => {
       const query = await getDocs(collection(db, 'golfcourses'))
       query.forEach((doc) => {
-        // console.log(doc.data())
         tempArray.push(doc.data())
       })
+      gameCheckContext.setCourseArray(tempArray)
       setCourseArray(tempArray)
     }
 
     getCourse()
   }, [])
-
-  useEffect(() => {
-    const tempArray = []
-    if (searchWord != '') {
-      console.log('!!!!!', searchWord)
-      for (let index = 0; index < courseArray.length; index++) {
-        if (
-          courseArray[index].name
-            .toLowerCase()
-            .includes(searchWord.toLowerCase())
-        ) {
-          //  var searchName = courseArray[index].name
-          tempArray.push(courseArray[index])
-        }
-      }
-      setCourseArray(tempArray)
-    }
-  }, [searchWord])
 
   const setRightImages = (courseImage) => {
     for (let index = 0; index < Images.length; index++) {
@@ -55,44 +37,91 @@ const CourseCard = ({ navigation, searchWord }) => {
     }
   }
 
+  const pressCard = (name, guide) => {
+    gameCheckContext.setWordToSearch('')
+    gameCheckContext.setCleanSearchBar(true)
+    navigation.navigate('Scorecard', {
+      courseName: name,
+      courseGuide: guide,
+    })
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      {courseArray.map((course, index) => (
-        <TouchableOpacity
-          index={index}
-          key={index}
-          disabled={gameCheckContext.gameStarted}
-          onPress={() => {
-            navigation.navigate('Scorecard', {
-              courseName: course.name,
-              courseGuide: course.courseguide,
-            })
-          }}
-          // onPress={() => {
-          //   navigation.navigate('Scorecard')
-          // }}
+      {gameCheckContext.noMatch ? (
+        <Text
+          style={[
+            AppStyles.h3,
+            AppStyles.warning,
+            { alignSelf: 'center', width: '85%' },
+          ]}
         >
-          <View style={styles.conteiner}>
-            <ImageBackground
-              style={styles.imageStyle}
-              source={setRightImages(course.image)}
-              resizeMode="cover"
-            >
-              <View style={styles.viewInsideCard}>
-                <Text style={[AppStyles.h2, styles.textInsideCard]}>
-                  {course.name}
-                </Text>
-                <Text style={[styles.textInsideCard]}>
-                  {course.holes}-hålsbana
-                </Text>
-                <Text style={[styles.textInsideCard]}>
-                  Övrigt: {course.information}
-                </Text>
-              </View>
-            </ImageBackground>
-          </View>
-        </TouchableOpacity>
-      ))}
+          Inga banor hittades med namnet "{gameCheckContext.wordToSearch}"
+        </Text>
+      ) : gameCheckContext.searchArray.length > 0 ? (
+        gameCheckContext.searchArray.map((course, index) => (
+          <TouchableOpacity
+            index={index}
+            key={index}
+            disabled={gameCheckContext.gameStarted}
+            onPress={() => pressCard(course.name, course.courseguide)}
+          >
+            <View style={styles.conteiner}>
+              <ImageBackground
+                style={styles.imageStyle}
+                source={setRightImages(course.image)}
+                resizeMode="cover"
+              >
+                <View style={styles.viewInsideCard}>
+                  <Text style={[AppStyles.h2, styles.textInsideCard]}>
+                    {course.name}
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    {course.holes}-hålsbana
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    Övrigt: {course.information}
+                  </Text>
+                </View>
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
+        ))
+      ) : (
+        courseArray.map((course, index) => (
+          <TouchableOpacity
+            index={index}
+            key={index}
+            disabled={gameCheckContext.gameStarted}
+            onPress={() => {
+              navigation.navigate('Scorecard', {
+                courseName: course.name,
+                courseGuide: course.courseguide,
+              })
+            }}
+          >
+            <View style={styles.conteiner}>
+              <ImageBackground
+                style={styles.imageStyle}
+                source={setRightImages(course.image)}
+                resizeMode="cover"
+              >
+                <View style={styles.viewInsideCard}>
+                  <Text style={[AppStyles.h2, styles.textInsideCard]}>
+                    {course.name}
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    {course.holes}-hålsbana
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    Övrigt: {course.information}
+                  </Text>
+                </View>
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
+        ))
+      )}
     </View>
   )
 }

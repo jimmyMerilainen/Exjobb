@@ -5,17 +5,32 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { useGameCheckFunction } from '../context/GameContext'
 
-const SearchBarComponent = ({ callBack }) => {
+const SearchBarComponent = () => {
+  const gameCheckContext = useGameCheckFunction()
   const [wordToSearch, setWordToSearch] = useState('')
 
   const searchButton = () => {
-    callBack(wordToSearch)
-    console.log(wordToSearch)
+    gameCheckContext.setWordToSearch(wordToSearch)
     Keyboard.dismiss()
   }
+
+  useEffect(() => {
+    if (wordToSearch === '' || wordToSearch === ' ') {
+      gameCheckContext.setWordToSearch('')
+    }
+  }, [wordToSearch])
+
+  useEffect(() => {
+    if (gameCheckContext.cleanSearchBar) {
+      setWordToSearch('')
+      gameCheckContext.setCleanSearchBar(false)
+    }
+  }, [gameCheckContext.cleanSearchBar])
+
   return (
     <View style={styles.conteiner}>
       <TextInput
