@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  ScrollView,
-} from 'react-native'
+import { ImageBackground, ScrollView } from 'react-native'
 import React from 'react'
 import SearchBarComponent from '../SearchBarComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -28,5 +22,3 @@ const HomeScreen = ({ navigation }) => {
 }
 
 export default HomeScreen
-
-const styles = StyleSheet.create({})
