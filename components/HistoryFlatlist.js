@@ -54,7 +54,6 @@ const HistoryFlatlist = ({ data }) => {
 
 	const openModalwithItem = (item) => {
 		setItemToChild(item)
-		console.log(item.course)
 		setModalVisible(!modalVisible)
 	}
 
