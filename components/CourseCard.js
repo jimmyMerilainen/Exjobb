@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react'
 import AppStyles from '../styles/AppStyles'
 import { useGameCheckFunction } from '../context/GameContext'
 import Images from '../Images'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { db } from '../firebase'
 import { getDocs, collection } from 'firebase/firestore'
@@ -30,6 +31,20 @@ const CourseCard = ({ navigation }) => {
 
     getCourse()
   }, [])
+
+  // useEffect(() => {
+  //   const fetchWeather = async () => {
+  //     const test = await fetch(
+  //       'https://api.openweathermap.org/data/2.5/weather?q=Gothenburg&appid=8d2d6315d41f327ab048d502e92fe5d5'
+  //     )
+  //     const response = await test.json()
+  //     console.log('funka!!!', response.weather[0].icon)
+  //   }
+
+  //   fetchWeather()
+  // })
+
+  const setRightIcon = (courseCity) => {}
 
   const setRightImages = (courseImage) => {
     for (let index = 0; index < Images.length; index++) {
@@ -106,16 +121,31 @@ const CourseCard = ({ navigation }) => {
                 source={setRightImages(course.image)}
                 resizeMode="cover"
               >
-                <View style={styles.viewInsideCard}>
-                  <Text style={[AppStyles.h2, styles.textInsideCard]}>
-                    {course.name}
-                  </Text>
-                  <Text style={[styles.textInsideCard]}>
-                    {course.holes}-hålsbana
-                  </Text>
-                  <Text style={[styles.textInsideCard]}>
-                    Övrigt: {course.information}
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingTop: 25,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View style={styles.viewInsideCard}>
+                    <Text style={[AppStyles.h2, styles.textInsideCard]}>
+                      {course.name}
+                    </Text>
+                    <Text style={[styles.textInsideCard]}>
+                      {course.holes}-hålsbana
+                    </Text>
+                    <Text style={[styles.textInsideCard]}>
+                      Övrigt: {course.information}
+                    </Text>
+                  </View>
+                  <View style={{ paddingRight: 15 }}>
+                    <Ionicons
+                      name="partly-sunny-outline"
+                      size={24}
+                      color="white"
+                    />
+                  </View>
                 </View>
               </ImageBackground>
             </View>
@@ -150,7 +180,7 @@ const styles = StyleSheet.create({
   },
   viewInsideCard: {
     paddingLeft: 15,
-    paddingTop: 25,
+    // paddingTop: 25,
   },
   textInsideCard: {
     color: 'white',
