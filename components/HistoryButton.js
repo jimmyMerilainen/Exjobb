@@ -4,17 +4,17 @@ import AppStyles from '../styles/AppStyles'
 
 const HistoryButton = ({ date, name, strokes, onPress, style }) => {
 	return (
-		<View
-			style={[
-				styles.loginView,
-				AppStyles.shadow,
-				AppStyles.grey,
-				AppStyles.border,
-				{ ...style },
-			]}
-		>
-			<View style={{ flex: 1 }}>
-				<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity onPress={onPress}>
+			<View
+				style={[
+					styles.loginView,
+					AppStyles.shadow,
+					AppStyles.grey,
+					AppStyles.border,
+					{ ...style },
+				]}
+			>
+				<View style={{ flex: 1 }}>
 					<View>
 						<Text
 							numberOfLines={1}
@@ -44,9 +44,9 @@ const HistoryButton = ({ date, name, strokes, onPress, style }) => {
 							{strokes ? strokes + ' Slag' : ''}
 						</Text>
 					</View>
-				</TouchableOpacity>
+				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	)
 }
 

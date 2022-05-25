@@ -44,7 +44,7 @@ const RegisterOverlay = ({ handleOnPress }) => {
 	return (
 		<View
 			style={[
-				styles.registerView,
+				AppStyles.registerView,
 				AppStyles.shadow,
 				AppStyles.grey,
 				AppStyles.border,
@@ -65,11 +65,13 @@ const RegisterOverlay = ({ handleOnPress }) => {
 						setModalVisible(!modalVisible)
 					}}
 				>
-					<View style={[styles.modalView, AppStyles.border, AppStyles.shadow]}>
-						<Text style={[styles.modalText, AppStyles.h1, {}]}>
+					<View
+						style={[AppStyles.modalView, AppStyles.border, AppStyles.shadow]}
+					>
+						<Text style={[AppStyles.modalText, AppStyles.h1, {}]}>
 							Skapa Konto
 						</Text>
-						<Text style={[styles.modalText, AppStyles.h3]}>
+						<Text style={[AppStyles.modalText, AppStyles.h3]}>
 							Skriv in dina uppgifter nedan
 						</Text>
 						<TextInputDefault
@@ -81,18 +83,21 @@ const RegisterOverlay = ({ handleOnPress }) => {
 							textCallback={setPassword}
 							placeholder="Lösenord"
 						/>
-						<ButtonDefault
-							text="Registrera"
-							onPress={() => {
-								handleCreateAccount()
-							}}
-						/>
-						<ButtonDefault
-							text="Avbryt"
-							onPress={() => {
-								setModalVisible(!modalVisible)
-							}}
-						/>
+						<View style={{ width: '100%' }}>
+							<ButtonDefault
+								style={{}}
+								text="Registrera"
+								onPress={() => {
+									handleCreateAccount()
+								}}
+							/>
+							<ButtonDefault
+								text="Avbryt"
+								onPress={() => {
+									setModalVisible(!modalVisible)
+								}}
+							/>
+						</View>
 						{errorMessage && (
 							<ChangeErrorText
 								text={errorMessage}
@@ -103,40 +108,17 @@ const RegisterOverlay = ({ handleOnPress }) => {
 				</Modal>
 			</KeyboardAvoidingView>
 			<TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-				<Text style={[styles.textStyle, AppStyles.buttonText]}>Registrera</Text>
+				<Text
+					style={[
+						AppStyles.buttonText,
+						{ color: 'white', textAlign: 'center' },
+					]}
+				>
+					Registrera
+				</Text>
 			</TouchableOpacity>
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	modalView: {
-		height: 550,
-		justifyContent: 'center',
-		alignContent: 'center',
-		alignItems: 'center',
-		marginTop: 22,
-		marginBottom: 100,
-		width: '85%',
-		backgroundColor: 'white',
-		alignSelf: 'center',
-	},
-	registerView: {
-		width: '85%',
-		height: 50,
-		marginBottom: 20,
-		alignItems: 'center',
-		alignSelf: 'center',
-		justifyContent: 'center',
-	},
-	textStyle: {
-		color: 'white',
-		textAlign: 'center',
-	},
-	modalText: {
-		marginBottom: 15,
-		textAlign: 'center',
-	},
-})
 
 export default RegisterOverlay
