@@ -1,13 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import UserAvatar from 'react-native-user-avatar'
+import { db, auth } from '../../firebase'
+import {
+	where,
+	query,
+	collection,
+	getDocs,
+	onSnapshot,
+} from 'firebase/firestore'
 
 import AppStyles from '../../styles/AppStyles'
 import HistoryFlatlist from '../HistoryFlatlist'
 
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
+	const [playedRounds, setPlayedRounds] = useState([])
+	const userId = auth.currentUser.uid
+
+	const loadUser = async () => {
+		let userHistory = []
+		const q = query(collection(db, 'users'), where('userId', '==', userId))
+		const querySnapshot = await getDocs(q)
+		querySnapshot.forEach((doc) => {
+			userHistory.push(doc.data())
+		})
+
+		setUsername(userHistory[0].username)
+		if (userHistory[0].history !== undefined) {
+			setPlayedRounds(userHistory[0].history)
+		}
+	}
+
+	useEffect(() => {
+		loadUser()
+	}, [playedRounds])
+
+	useEffect(() => {
+		const colRef = collection(db, 'users')
+		onSnapshot(colRef, (snapshot) => {
+			console.log('Updated!')
+		})
+	}, [])
 
 	return (
 		<ImageBackground
@@ -69,7 +104,7 @@ const ProfileScreen = ({ navigation }) => {
 						flex: 1,
 					}}
 				>
-					<HistoryFlatlist />
+					<HistoryFlatlist data={playedRounds} />
 				</View>
 			</View>
 		</ImageBackground>
