@@ -9,7 +9,8 @@ import React, { useState, useEffect } from 'react'
 import AppStyles from '../styles/AppStyles'
 import { useGameCheckFunction } from '../context/GameContext'
 import Images from '../Images'
-import Ionicons from '@expo/vector-icons/Ionicons'
+import Icons from '../Icons'
+import Fontisto from '@expo/vector-icons/Fontisto'
 
 import { db } from '../firebase'
 import { getDocs, collection } from 'firebase/firestore'
@@ -17,6 +18,9 @@ import { getDocs, collection } from 'firebase/firestore'
 const CourseCard = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
   const [courseArray, setCourseArray] = useState([])
+  const [tempCourseArray, setTempCourseArray] = useState([])
+
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     const tempArray = []
@@ -25,26 +29,37 @@ const CourseCard = ({ navigation }) => {
       query.forEach((doc) => {
         tempArray.push(doc.data())
       })
-      gameCheckContext.setCourseArray(tempArray)
-      setCourseArray(tempArray)
+
+      setTempCourseArray(tempArray)
+      setDone(true)
     }
 
     getCourse()
   }, [])
 
-  // useEffect(() => {
-  //   const fetchWeather = async () => {
-  //     const test = await fetch(
-  //       'https://api.openweathermap.org/data/2.5/weather?q=Gothenburg&appid=8d2d6315d41f327ab048d502e92fe5d5'
-  //     )
-  //     const response = await test.json()
-  //     console.log('funka!!!', response.weather[0].icon)
-  //   }
+  useEffect(() => {
+    const tempArray = []
+    const fetchWeather = async () => {
+      for (let index = 0; index < tempCourseArray.length; index++) {
+        const data = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${tempCourseArray[index].city}&appid=8d2d6315d41f327ab048d502e92fe5d5`
+        )
+        const response = await data.json()
 
-  //   fetchWeather()
-  // })
+        for (let j = 0; j < Icons.length; j++) {
+          for (let n = 0; n < Icons[j].id.length; n++) {
+            if (Icons[j].id[n] === response.weather[0].id) {
+              tempArray.push({ ...tempCourseArray[index], icon: Icons[j].name })
+            }
+          }
+        }
+      }
+      gameCheckContext.setCourseArray(tempArray)
+      setCourseArray(tempArray)
+    }
 
-  const setRightIcon = (courseCity) => {}
+    fetchWeather()
+  }, [done])
 
   const setRightImages = (courseImage) => {
     for (let index = 0; index < Images.length; index++) {
@@ -87,6 +102,16 @@ const CourseCard = ({ navigation }) => {
                 source={setRightImages(course.image)}
                 resizeMode="cover"
               >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    paddingRight: 15,
+                    paddingTop: 5,
+                  }}
+                >
+                  <Fontisto name={course.icon} size={24} color="white" />
+                </View>
                 <View style={styles.viewInsideCard}>
                   <Text style={[AppStyles.h2, styles.textInsideCard]}>
                     {course.name}
@@ -124,28 +149,24 @@ const CourseCard = ({ navigation }) => {
                 <View
                   style={{
                     flexDirection: 'row',
-                    paddingTop: 25,
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
+                    paddingRight: 15,
+                    paddingTop: 5,
                   }}
                 >
-                  <View style={styles.viewInsideCard}>
-                    <Text style={[AppStyles.h2, styles.textInsideCard]}>
-                      {course.name}
-                    </Text>
-                    <Text style={[styles.textInsideCard]}>
-                      {course.holes}-hålsbana
-                    </Text>
-                    <Text style={[styles.textInsideCard]}>
-                      Övrigt: {course.information}
-                    </Text>
-                  </View>
-                  <View style={{ paddingRight: 15 }}>
-                    <Ionicons
-                      name="partly-sunny-outline"
-                      size={24}
-                      color="white"
-                    />
-                  </View>
+                  <Fontisto name={course.icon} size={24} color="white" />
+                </View>
+
+                <View style={styles.viewInsideCard}>
+                  <Text style={[AppStyles.h2, styles.textInsideCard]}>
+                    {course.name}
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    {course.holes}-hålsbana
+                  </Text>
+                  <Text style={[styles.textInsideCard]}>
+                    Övrigt: {course.information}
+                  </Text>
                 </View>
               </ImageBackground>
             </View>
@@ -180,7 +201,6 @@ const styles = StyleSheet.create({
   },
   viewInsideCard: {
     paddingLeft: 15,
-    // paddingTop: 25,
   },
   textInsideCard: {
     color: 'white',
