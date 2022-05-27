@@ -23,12 +23,13 @@ const HistoryFlatlist = ({ data }) => {
 		'Nov',
 		'Dec',
 	]
-	const days = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön']
+	const days = ['Sön', 'Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör']
 
 	const changeDateLanguage = (monthIndex, dayIndex, day, year) => {
 		let sweMonth = months[monthIndex]
 		let sweDay = days[dayIndex]
 		let sweFullYear = sweDay.concat(' ', sweMonth, ' ', day, ' ', year)
+		console.log('day index', dayIndex)
 
 		return sweFullYear
 	}

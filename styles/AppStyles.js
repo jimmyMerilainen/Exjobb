@@ -42,6 +42,9 @@ export default StyleSheet.create({
 	warning: {
 		color: '#C41E3D',
 	},
+	success: {
+		color: 'green',
+	},
 
 	/* Shadow */
 	shadow: {

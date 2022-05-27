@@ -1,45 +1,25 @@
 import React, { useState } from 'react'
 import {
 	Modal,
-	StyleSheet,
 	Text,
 	View,
 	TouchableOpacity,
 	KeyboardAvoidingView,
 } from 'react-native'
 
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth, db } from '../firebase'
-import { doc, setDoc } from 'firebase/firestore'
-
 import ButtonDefault from './ButtonDefault'
 import AppStyles from '../styles/AppStyles'
 import TextInputDefault from './TextInputDefault'
 import ChangeErrorText from './ChangeErrorText'
 
-const RegisterOverlay = ({ handleOnPress }) => {
-	const [modalVisible, setModalVisible] = useState(false)
-	const [email, setEmail] = useState()
-	const [password, setPassword] = useState()
-	const [username, setUsername] = useState()
-	const [errorMessage, setErrorMessage] = useState()
-
-	const handleCreateAccount = () => {
-		createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				const user = userCredential.user
-				console.log('Account created with email: ', user.email)
-
-				const newUser = doc(db, 'users', user.uid)
-				const newUserData = { username: username, userId: user.uid }
-
-				setDoc(newUser, newUserData)
-			})
-			.catch((error) => {
-				console.log(error.message)
-				setErrorMessage(error.message)
-			})
-	}
+const ChangeCredentialsOverlay = ({
+	handleOnPress,
+	errorMessage,
+	modalVisible,
+	setModalVisible,
+}) => {
+	const [currentPassword, setCurrentPassword] = useState()
+	const [newPassword, setNewPassword] = useState()
 
 	return (
 		<View
@@ -68,28 +48,36 @@ const RegisterOverlay = ({ handleOnPress }) => {
 					<View
 						style={[AppStyles.modalView, AppStyles.border, AppStyles.shadow]}
 					>
-						<Text style={[AppStyles.modalText, AppStyles.h1, {}]}>
-							Skapa Konto
+						<Text style={[AppStyles.modalText, AppStyles.h1]}>
+							Ändra Lösenord
 						</Text>
 						<Text style={[AppStyles.modalText, AppStyles.h3]}>
-							Skriv in dina uppgifter nedan
+							Skriv in uppgifter nedan
 						</Text>
 						<TextInputDefault
-							textCallback={setUsername}
-							placeholder="Användarnamn"
+							type="password"
+							textCallback={setCurrentPassword}
+							placeholder="Nuvarande lösenord"
 						/>
-						<TextInputDefault textCallback={setEmail} placeholder="Email" />
+
 						<TextInputDefault
 							type="password"
-							textCallback={setPassword}
-							placeholder="Lösenord"
+							textCallback={setNewPassword}
+							placeholder="Nytt lösenord"
 						/>
+						{errorMessage && (
+							<ChangeErrorText
+								text={errorMessage}
+								style={{ marginBottom: 8 }}
+							/>
+						)}
+
 						<View style={{ width: '100%' }}>
 							<ButtonDefault
 								style={{}}
-								text="Registrera"
+								text="Ändra"
 								onPress={() => {
-									handleCreateAccount()
+									handleOnPress(currentPassword, newPassword)
 								}}
 							/>
 							<ButtonDefault
@@ -99,12 +87,6 @@ const RegisterOverlay = ({ handleOnPress }) => {
 								}}
 							/>
 						</View>
-						{errorMessage && (
-							<ChangeErrorText
-								text={errorMessage}
-								style={{ marginBottom: 15 }}
-							/>
-						)}
 					</View>
 				</Modal>
 			</KeyboardAvoidingView>
@@ -115,11 +97,11 @@ const RegisterOverlay = ({ handleOnPress }) => {
 						{ color: 'white', textAlign: 'center' },
 					]}
 				>
-					Registrera
+					Ändra lösenord
 				</Text>
 			</TouchableOpacity>
 		</View>
 	)
 }
 
-export default RegisterOverlay
+export default ChangeCredentialsOverlay

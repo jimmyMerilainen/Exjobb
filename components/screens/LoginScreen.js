@@ -38,7 +38,11 @@ const LoginScreen = () => {
 			</View>
 			<View style={AppStyles.container}>
 				<TextInputDefault textCallback={setEmail} placeholder="Email" />
-				<TextInputDefault textCallback={setPassword} placeholder="Lösenord" />
+				<TextInputDefault
+					textCallback={setPassword}
+					placeholder="Lösenord"
+					type="password"
+				/>
 				<ButtonDefault
 					text="Logga in"
 					onPress={() => {
