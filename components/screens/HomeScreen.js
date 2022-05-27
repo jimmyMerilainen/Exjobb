@@ -1,4 +1,4 @@
-import { ImageBackground, ScrollView } from 'react-native'
+import { ImageBackground, ScrollView, View } from 'react-native'
 import React from 'react'
 import SearchBarComponent from '../SearchBarComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -12,7 +12,9 @@ const HomeScreen = ({ navigation }) => {
       resizeMode="cover"
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <SearchBarComponent />
+        <View style={{ marginTop: 15 }}>
+          <SearchBarComponent />
+        </View>
         <ScrollView keyboardDismissMode="on-drag">
           <CourseCard navigation={navigation} />
         </ScrollView>

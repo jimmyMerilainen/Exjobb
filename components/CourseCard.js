@@ -13,7 +13,7 @@ import Icons from '../Icons'
 import Fontisto from '@expo/vector-icons/Fontisto'
 
 import { db } from '../firebase'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, orderBy, query } from 'firebase/firestore'
 
 const CourseCard = ({ navigation }) => {
   const gameCheckContext = useGameCheckFunction()
@@ -25,11 +25,11 @@ const CourseCard = ({ navigation }) => {
   useEffect(() => {
     const tempArray = []
     const getCourse = async () => {
-      const query = await getDocs(collection(db, 'golfcourses'))
-      query.forEach((doc) => {
+      const q = query(collection(db, 'golfcourses'), orderBy('name', 'asc'))
+      const data = await getDocs(q)
+      data.forEach((doc) => {
         tempArray.push(doc.data())
       })
-
       setTempCourseArray(tempArray)
       setDone(true)
     }
