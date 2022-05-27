@@ -8,7 +8,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native'
-
+import { SafeAreaView } from 'react-native-safe-area-context'
 import AppStyles from '../../styles/AppStyles'
 import ButtonDefault from '../ButtonDefault'
 import { useGameCheckFunction } from '../../context/GameContext'
@@ -86,85 +86,89 @@ const ScoreCardScreen = ({ route, navigation }) => {
       source={require('../../assets/images/background.png')}
       resizeMode="cover"
     >
-      <View style={AppStyles.container}>
-        <Text
-          style={[
-            AppStyles.h1,
-            {
-              textAlign: 'center',
-              color: 'white',
-              width: '85%',
-              alignSelf: 'center',
-            },
-          ]}
-        >
-          {courseName}
-        </Text>
-        {!gameCheckContext.gameStarted ? (
-          <View>
-            <View style={styles.viewForDropdown}>
-              <Dropdown
-                placeholderDd={'Välj TEE'}
-                DpArray={['Röd', 'Blå', 'Gul', 'Vit']}
-                callBack={selectTee}
-              />
-              <Dropdown
-                placeholderDd={'Antal hål'}
-                DpArray={[9, 18]}
-                callBack={selectHole}
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={AppStyles.container}>
+          <Text
+            style={[
+              AppStyles.h1,
+              {
+                textAlign: 'center',
+                color: 'white',
+                width: '85%',
+                alignSelf: 'center',
+              },
+            ]}
+          >
+            {courseName}
+          </Text>
+          {!gameCheckContext.gameStarted ? (
+            <View>
+              <View style={styles.viewForDropdown}>
+                <Dropdown
+                  placeholderDd={'Välj TEE'}
+                  DpArray={['Röd', 'Blå', 'Gul', 'Vit']}
+                  callBack={selectTee}
+                />
+                <Dropdown
+                  placeholderDd={'Antal hål'}
+                  DpArray={[9, 18]}
+                  callBack={selectHole}
+                />
+              </View>
+              {tee != null && hole != null && (
+                <ButtonDefault text="Starta spel" onPress={startGame} />
+              )}
+              <ButtonDefault
+                text="Tillbaka"
+                onPress={() => navigation.goBack()}
               />
             </View>
-            {tee != null && hole != null && (
-              <ButtonDefault text="Starta spel" onPress={startGame} />
-            )}
-            <ButtonDefault
-              text="Tillbaka"
-              onPress={() => navigation.goBack()}
-            />
-          </View>
-        ) : (
-          <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
-            <ScrollView keyboardDismissMode="on-drag">
-              <View style={styles.scoreCard}>
-                <Text style={[AppStyles.h3, styles.box]}>Hål</Text>
-                <View style={styles.line}></View>
-                <Text style={[AppStyles.h3, styles.box]}>TEE</Text>
-                <View style={styles.line}></View>
-                <Text style={[AppStyles.h3, styles.box]}>Par</Text>
-                <View style={styles.line}></View>
-                <Text style={[AppStyles.h3, styles.box2]}>Slag</Text>
-              </View>
+          ) : (
+            <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+              <ScrollView keyboardDismissMode="on-drag">
+                <View style={styles.scoreCard}>
+                  <Text style={[AppStyles.h3, styles.box]}>Hål</Text>
+                  <View style={styles.line}></View>
+                  <Text style={[AppStyles.h3, styles.box]}>TEE</Text>
+                  <View style={styles.line}></View>
+                  <Text style={[AppStyles.h3, styles.box]}>Par</Text>
+                  <View style={styles.line}></View>
+                  <Text style={[AppStyles.h3, styles.box2]}>Slag</Text>
+                </View>
 
-              <View style={{ marginBottom: 20 }}>
-                {scoreCard.map((game, index) => (
-                  <View index={index} key={index} style={styles.scoreCard}>
-                    <Text style={[AppStyles.h3, styles.box]}>{game.hole}</Text>
-                    <View style={styles.line}></View>
-                    <Text style={[AppStyles.h3, styles.box]}>{game.tee}</Text>
-                    <View style={styles.line}></View>
-                    <Text style={[AppStyles.h3, styles.box]}>{game.par}</Text>
-                    <View style={styles.line}></View>
-                    <TextInput
-                      key={index}
-                      style={[AppStyles.h3, styles.box2]}
-                      placeholder="-"
-                      keyboardType="number-pad"
-                      maxLength={2}
-                      onChangeText={(s) => setRightStrike(game.hole, s)}
-                    />
-                  </View>
-                ))}
-              </View>
+                <View style={{ marginBottom: 20 }}>
+                  {scoreCard.map((game, index) => (
+                    <View index={index} key={index} style={styles.scoreCard}>
+                      <Text style={[AppStyles.h3, styles.box]}>
+                        {game.hole}
+                      </Text>
+                      <View style={styles.line}></View>
+                      <Text style={[AppStyles.h3, styles.box]}>{game.tee}</Text>
+                      <View style={styles.line}></View>
+                      <Text style={[AppStyles.h3, styles.box]}>{game.par}</Text>
+                      <View style={styles.line}></View>
+                      <TextInput
+                        key={index}
+                        style={[AppStyles.h3, styles.box2]}
+                        placeholder="-"
+                        keyboardType="number-pad"
+                        maxLength={2}
+                        onChangeText={(s) => setRightStrike(game.hole, s)}
+                      />
+                    </View>
+                  ))}
+                </View>
 
-              <ButtonDefault
-                text="Avsluta spel"
-                onPress={endGame}
-                disabled={!stroke}
-              />
-            </ScrollView>
-          </KeyboardAvoidingView>
-        )}
-      </View>
+                <ButtonDefault
+                  text="Avsluta spel"
+                  onPress={endGame}
+                  disabled={!stroke}
+                />
+              </ScrollView>
+            </KeyboardAvoidingView>
+          )}
+        </View>
+      </SafeAreaView>
     </ImageBackground>
   )
 }
