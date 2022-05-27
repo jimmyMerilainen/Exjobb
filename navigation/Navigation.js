@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import {
   Ionicons,
   MaterialIcons,
@@ -48,6 +48,7 @@ const HomeStackScreen = () => {
 }
 
 const BottomTabNavigator = () => {
+  const [tabpressed, setTabpressed] = useState(true)
   const gameCheckContext = useGameCheckFunction()
   return (
     <Tab.Navigator
@@ -68,18 +69,28 @@ const BottomTabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Hem"
+        name="Spela"
         component={HomeStackScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              name="md-home-outline"
+              name="golf-outline"
               size={24}
               color={focused ? 'white' : 'grey'}
             />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            if (tabpressed) {
+              e.preventDefault()
+            } else if (!tabpressed) {
+              setTabpressed(true)
+            }
+          },
+        }}
       />
+
       {/* {gameCheckContext.gameStarted && (
         <Tab.Screen
           name="Scorecard"
@@ -106,6 +117,9 @@ const BottomTabNavigator = () => {
               color={focused ? 'white' : 'grey'}
             />
           ),
+        }}
+        listeners={{
+          tabPress: () => setTabpressed(false),
         }}
       />
     </Tab.Navigator>
