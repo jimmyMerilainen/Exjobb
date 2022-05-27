@@ -1,6 +1,9 @@
 import Toast from 'react-native-root-toast'
 import AppStyles from './styles/AppStyles'
 
+/** ConvertResponseText(string: text)
+ * Insert firebase error message to translate to swedish
+ */
 export function ConvertResponseText(text) {
 	if (text === 'Firebase: Error (auth/user-not-found).') {
 		return 'Avändare finns inte'
@@ -30,6 +33,11 @@ export function ConvertResponseText(text) {
 	}
 }
 
+/** showToast(string: message, boolean: success)
+ * Insert message to display
+ * Insert true/false for color: green/red
+ * Needs to be wrapped with <RootSiblingParent>
+ */
 export function showToast(message, success) {
 	let toast = Toast.show(message, {
 		position: -150,

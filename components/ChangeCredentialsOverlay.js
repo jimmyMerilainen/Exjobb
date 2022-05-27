@@ -48,7 +48,7 @@ const ChangeCredentialsOverlay = ({ handleOnPress, errorMessage }) => {
 							Ändra Lösenord
 						</Text>
 						<Text style={[AppStyles.modalText, AppStyles.h3]}>
-							Skriv in nya uppgifter nedan
+							Skriv in uppgifter nedan
 						</Text>
 						<TextInputDefault
 							type="password"
@@ -101,7 +101,3 @@ const ChangeCredentialsOverlay = ({ handleOnPress, errorMessage }) => {
 }
 
 export default ChangeCredentialsOverlay
-
-/* 5 flaskor, 2 flaskor alkoholfritt, 4st öl Sandra
-	 GingerJoe 2st, Cidre, Öl
-*/

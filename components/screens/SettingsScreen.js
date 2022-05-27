@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, ImageBackground, StyleSheet } from 'react-native'
 import { auth } from '../../firebase'
 import {
@@ -17,6 +17,7 @@ import ChangeCredentialsOverlay from '../ChangeCredentialsOverlay'
 
 const SettingsScreen = () => {
 	const [errorMessage, setErrorMessage] = useState()
+	const success = true
 
 	const logout = () => {
 		signOut(auth).then(() => {
@@ -29,7 +30,7 @@ const SettingsScreen = () => {
 		try {
 			await reauthenticateWithCredential(user, cred)
 			await updatePassword(user, newPassword)
-			showToast('Password updated!', true)
+			showToast('Password updated!', success)
 		} catch (e) {
 			setErrorMessage(e.message)
 		}
@@ -50,7 +51,7 @@ const SettingsScreen = () => {
 					<ButtonDefault
 						text="Om appen"
 						onPress={() => {
-							showToast('GJORD AV JIMMY & RASMUS', true)
+							showToast('GJORD AV JIMMY & RASMUS', success)
 						}}
 					/>
 					<ButtonDefault
