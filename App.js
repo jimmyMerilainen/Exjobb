@@ -26,7 +26,7 @@ export default function App() {
 
 	return isLogged ? (
 		<SafeAreaProvider>
-			<SafeAreaView style={{ flex: 1 }}>
+			<SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
 				<GameProvider>
 					<Navigation />
 				</GameProvider>
