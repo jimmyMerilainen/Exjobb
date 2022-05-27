@@ -17,6 +17,7 @@ import ChangeCredentialsOverlay from '../ChangeCredentialsOverlay'
 
 const SettingsScreen = () => {
 	const [errorMessage, setErrorMessage] = useState()
+	const [modalVisible, setModalVisible] = useState(false)
 	const success = true
 
 	const logout = () => {
@@ -30,6 +31,7 @@ const SettingsScreen = () => {
 		try {
 			await reauthenticateWithCredential(user, cred)
 			await updatePassword(user, newPassword)
+			setModalVisible(false)
 			showToast('Password updated!', success)
 		} catch (e) {
 			setErrorMessage(e.message)
@@ -45,6 +47,8 @@ const SettingsScreen = () => {
 			>
 				<View style={[AppStyles.container, styles.container]}>
 					<ChangeCredentialsOverlay
+						modalVisible={modalVisible}
+						setModalVisible={setModalVisible}
 						handleOnPress={newPassword}
 						errorMessage={errorMessage}
 					/>

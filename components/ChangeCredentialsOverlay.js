@@ -12,8 +12,12 @@ import AppStyles from '../styles/AppStyles'
 import TextInputDefault from './TextInputDefault'
 import ChangeErrorText from './ChangeErrorText'
 
-const ChangeCredentialsOverlay = ({ handleOnPress, errorMessage }) => {
-	const [modalVisible, setModalVisible] = useState(false)
+const ChangeCredentialsOverlay = ({
+	handleOnPress,
+	errorMessage,
+	modalVisible,
+	setModalVisible,
+}) => {
 	const [currentPassword, setCurrentPassword] = useState()
 	const [newPassword, setNewPassword] = useState()
 
