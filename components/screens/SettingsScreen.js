@@ -32,7 +32,7 @@ const SettingsScreen = () => {
 			await reauthenticateWithCredential(user, cred)
 			await updatePassword(user, newPassword)
 			setModalVisible(false)
-			showToast('Password updated!', success)
+			showToast('Lösenord uppdaterat!', success)
 		} catch (e) {
 			setErrorMessage(e.message)
 		}
