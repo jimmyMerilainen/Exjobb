@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
 	container: {
 		flex: 1,
@@ -88,11 +88,11 @@ export default StyleSheet.create({
 	},
 	/* Modal Overlay */
 	modalView: {
-		height: 550,
+		height: 520,
 		justifyContent: 'center',
 		alignContent: 'center',
 		alignItems: 'center',
-		marginTop: 22,
+		marginTop: 50,
 		marginBottom: 100,
 		width: '85%',
 		backgroundColor: 'white',

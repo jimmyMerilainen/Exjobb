@@ -59,5 +59,5 @@ export function showToast(message, success) {
  * calculating distance in kilometers from point currentLatlong to toLatLang
  */
 export function getLocationDistance(currentLatLong, toLatLang) {
-	return convertDistance(getDistance(currentLatLong, toLatLang, 100), 'km')
+	return convertDistance(getDistance(currentLatLong, toLatLang, 1000), 'km')
 }
