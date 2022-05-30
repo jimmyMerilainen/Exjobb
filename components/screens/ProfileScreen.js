@@ -41,6 +41,9 @@ const ProfileScreen = ({ navigation }) => {
     onSnapshot(colRef, (snapshot) => {
       loadUser()
     })
+    return () => {
+      setPlayedRounds([])
+    }
   }, [])
 
   return (
