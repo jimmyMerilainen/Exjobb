@@ -1,10 +1,11 @@
 import Toast from 'react-native-root-toast'
 import AppStyles from './styles/AppStyles'
+import { getDistance, convertDistance } from 'geolib'
 
 /** ConvertResponseText(string: text)
  * Insert firebase error message to translate to swedish
  */
-export function ConvertResponseText(text) {
+export function convertResponseText(text) {
 	if (text === 'Firebase: Error (auth/user-not-found).') {
 		return 'Avändare finns inte'
 	}
@@ -50,4 +51,13 @@ export function showToast(message, success) {
 	setTimeout(function () {
 		Toast.hide(toast)
 	}, 5000)
+}
+
+/** getLocationDistance(object: currentLatlong, object: toLatLang)
+ * currentLatLang object with latitude and longitude
+ * toLatLang object with latitude and longitude
+ * calculating distance in kilometers from point currentLatlong to toLatLang
+ */
+export function getLocationDistance(currentLatLong, toLatLang) {
+	return convertDistance(getDistance(currentLatLong, toLatLang, 100), 'km')
 }

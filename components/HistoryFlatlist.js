@@ -29,7 +29,6 @@ const HistoryFlatlist = ({ data }) => {
 		let sweMonth = months[monthIndex]
 		let sweDay = days[dayIndex]
 		let sweFullYear = sweDay.concat(' ', sweMonth, ' ', day, ' ', year)
-		console.log('day index', dayIndex)
 
 		return sweFullYear
 	}
