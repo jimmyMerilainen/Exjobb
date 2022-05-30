@@ -19,6 +19,7 @@ import LoadingIndicator from '../LoadingIndicator'
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
 	const [playedRounds, setPlayedRounds] = useState([])
+	const [isLoading, setIsLoading] = useState(true)
 
 	const loadUser = async () => {
 		setIsLoading(true)
@@ -48,15 +49,24 @@ const ProfileScreen = ({ navigation }) => {
 			setPlayedRounds([])
 		}
 	}, [])
-	return (
-		<ImageBackground
-			style={AppStyles.container}
-			source={require('../../assets/images/background.png')}
-			resizeMode="cover"
-		>
-			{isLoading ? (
+
+	if (isLoading) {
+		return (
+			<ImageBackground
+				style={{ flex: 1 }}
+				source={require('../../assets/images/background.png')}
+				resizeMode="cover"
+			>
 				<LoadingIndicator />
-			) : (
+			</ImageBackground>
+		)
+	} else
+		return (
+			<ImageBackground
+				style={AppStyles.container}
+				source={require('../../assets/images/background.png')}
+				resizeMode="cover"
+			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<View style={[AppStyles.container]}>
 						<View
@@ -118,9 +128,8 @@ const ProfileScreen = ({ navigation }) => {
 						</View>
 					</View>
 				</SafeAreaView>
-			)}
-		</ImageBackground>
-	)
+			</ImageBackground>
+		)
 }
 
 export default ProfileScreen

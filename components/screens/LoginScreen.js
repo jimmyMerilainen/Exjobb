@@ -16,15 +16,18 @@ import { auth } from '../../firebase'
 import ButtonDefault from '../ButtonDefault'
 import ChangeErrorText from '../ChangeErrorText'
 import RegisterOverlay from '../RegisterOverlay'
+import LoadingIndicator from '../LoadingIndicator'
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState()
 	const [password, setPassword] = useState()
 	const [showPassword, setShowPassword] = useState(false)
 	const [errorMessage, setErrorMessage] = useState()
+	const [isLoading, setIsLoading] = useState(true)
 	const ref_input = useRef()
 
 	const handleSignIn = () => {
+		setIsLoading(true)
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				const user = userCredential.user
@@ -34,81 +37,85 @@ const LoginScreen = () => {
 				console.log(error.message)
 				setErrorMessage(error.message)
 			})
+		setIsLoading(false)
 	}
 
-	return (
-		<ImageBackground
-			style={AppStyles.container}
-			source={require('../../assets/images/background.png')}
-			resizeMode="cover"
-		>
-			<View style={styles.logoView}>
-				<Text style={[styles.logoText, AppStyles.h1]}>GolfHacker</Text>
-			</View>
-			<View style={AppStyles.container}>
-				<View
-					style={[styles.textInputView, AppStyles.border, AppStyles.shadow]}
-				>
-					<TextInput
-						onChangeText={(newText) => setEmail(newText)}
-						value={email}
-						placeholder="Email"
-						placeholderTextColor={AppStyles.gold.color}
-						selectionColor={AppStyles.gold.color}
-						color={AppStyles.gold.color}
-						style={[styles.textInput, AppStyles.textInput]}
-						keyboardType="email-address"
-						returnKeyType="next"
-						onSubmitEditing={() => ref_input.current?.focus()}
-					/>
+	if (isLoading) {
+		return <LoadingIndicator />
+	} else
+		return (
+			<ImageBackground
+				style={AppStyles.container}
+				source={require('../../assets/images/background.png')}
+				resizeMode="cover"
+			>
+				<View style={styles.logoView}>
+					<Text style={[styles.logoText, AppStyles.h1]}>GolfHacker</Text>
 				</View>
-				<View style={styles.conteiner}>
-					<TextInput
-						placeholder="Lösenord"
-						placeholderTextColor="#DDB58E"
-						selectionColor="#DDB58E"
-						color="#DDB58E"
-						returnKeyType="go"
-						style={styles.inputStyle}
-						onChangeText={(newText) => setPassword(newText)}
-						onSubmitEditing={() => handleSignIn()}
-						value={password}
-						secureTextEntry={showPassword ? false : true}
-						ref={ref_input}
-					/>
-					<View style={styles.lineNearIcon}></View>
-					<TouchableOpacity
-						style={styles.iconContainer}
-						onPress={() => {
-							setShowPassword(!showPassword)
-						}}
+				<View style={AppStyles.container}>
+					<View
+						style={[styles.textInputView, AppStyles.border, AppStyles.shadow]}
 					>
-						<Ionicons
-							name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-							size={30}
-							color="#DDB58E"
+						<TextInput
+							onChangeText={(newText) => setEmail(newText)}
+							value={email}
+							placeholder="Email"
+							placeholderTextColor={AppStyles.gold.color}
+							selectionColor={AppStyles.gold.color}
+							color={AppStyles.gold.color}
+							style={[styles.textInput, AppStyles.textInput]}
+							keyboardType="email-address"
+							returnKeyType="next"
+							onSubmitEditing={() => ref_input.current?.focus()}
 						/>
-					</TouchableOpacity>
-				</View>
-				<ButtonDefault
-					text="Logga in"
-					onPress={() => {
-						handleSignIn()
-					}}
-				/>
+					</View>
+					<View style={styles.conteiner}>
+						<TextInput
+							placeholder="Lösenord"
+							placeholderTextColor="#DDB58E"
+							selectionColor="#DDB58E"
+							color="#DDB58E"
+							returnKeyType="go"
+							style={styles.inputStyle}
+							onChangeText={(newText) => setPassword(newText)}
+							onSubmitEditing={() => handleSignIn()}
+							value={password}
+							secureTextEntry={showPassword ? false : true}
+							ref={ref_input}
+						/>
+						<View style={styles.lineNearIcon}></View>
+						<TouchableOpacity
+							style={styles.iconContainer}
+							onPress={() => {
+								setShowPassword(!showPassword)
+							}}
+						>
+							<Ionicons
+								name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+								size={30}
+								color="#DDB58E"
+							/>
+						</TouchableOpacity>
+					</View>
+					<ButtonDefault
+						text="Logga in"
+						onPress={() => {
+							handleSignIn()
+						}}
+					/>
 
-				<RegisterOverlay />
+					<RegisterOverlay />
 
-				<View style={{ width: '80%', alignSelf: 'center' }}>
-					{errorMessage && <ChangeErrorText text={errorMessage} />}
-					<Text style={AppStyles.h3}>
-						Konto sedan tidigare?{'\n'}Logga in ovan för att ladda dina
-						uppgifter
-					</Text>
+					<View style={{ width: '80%', alignSelf: 'center' }}>
+						{errorMessage && <ChangeErrorText text={errorMessage} />}
+						<Text style={AppStyles.h3}>
+							Konto sedan tidigare?{'\n'}Logga in ovan för att ladda dina
+							uppgifter
+						</Text>
+					</View>
 				</View>
-			</View>
-		</ImageBackground>
-	)
+			</ImageBackground>
+		)
 }
 export default LoginScreen
 

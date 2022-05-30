@@ -11,6 +11,7 @@ import { useGameCheckFunction } from '../context/GameContext'
 import Images from '../Images'
 import Icons from '../Icons'
 import Fontisto from '@expo/vector-icons/Fontisto'
+import LoadingIndicator from './LoadingIndicator'
 import { getLocationDistance } from '../helpers'
 import * as Location from 'expo-location'
 
@@ -22,11 +23,13 @@ const CourseCard = ({ navigation }) => {
 	const [courseArray, setCourseArray] = useState([])
 	const [tempCourseArray, setTempCourseArray] = useState([])
 	const [currentLocation, setCurrentLocation] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	const [done, setDone] = useState(false)
 
 	useEffect(() => {
 		const getCurrentLocation = async () => {
+			setIsLoading(true)
 			let { status } = await Location.requestForegroundPermissionsAsync()
 			if (status !== 'granted') {
 				console.log('Permission to access location was denied')
@@ -37,12 +40,15 @@ const CourseCard = ({ navigation }) => {
 				latitude: currentLocation.coords.latitude,
 				longitude: currentLocation.coords.longitude,
 			})
+			setIsLoading(false)
 		}
 		getCurrentLocation()
 	}, [])
 
 	useEffect(() => {
+		setIsLoading(true)
 		const tempArray = []
+
 		const getCourse = async () => {
 			const q = query(collection(db, 'golfcourses'), orderBy('name', 'asc'))
 			const data = await getDocs(q)
@@ -51,12 +57,14 @@ const CourseCard = ({ navigation }) => {
 			})
 			setTempCourseArray(tempArray)
 			setDone(true)
+			setIsLoading(false)
 		}
 
 		getCourse()
 	}, [])
 
 	useEffect(() => {
+		setIsLoading(true)
 		const tempArray = []
 		const fetchWeather = async () => {
 			for (let index = 0; index < tempCourseArray.length; index++) {
@@ -75,6 +83,7 @@ const CourseCard = ({ navigation }) => {
 			}
 			gameCheckContext.setCourseArray(tempArray)
 			setCourseArray(tempArray)
+			setIsLoading(false)
 		}
 
 		fetchWeather()
@@ -95,112 +104,124 @@ const CourseCard = ({ navigation }) => {
 		})
 	}
 
-	return (
-		<View style={{ flex: 1 }}>
-			{gameCheckContext.noMatch ? (
-				<Text
-					style={[
-						AppStyles.h3,
-						AppStyles.warning,
-						{ alignSelf: 'center', width: '85%' },
-					]}
-				>
-					Inga banor hittades med namnet "{gameCheckContext.wordToSearch}"
-				</Text>
-			) : gameCheckContext.searchArray.length > 0 ? (
-				gameCheckContext.searchArray.map((course, index) => (
-					<TouchableOpacity
-						index={index}
-						key={index}
-						disabled={gameCheckContext.gameStarted}
-						onPress={() => pressCard(course.name, course.courseguide)}
+	if (isLoading) {
+		return <LoadingIndicator />
+	} else
+		return (
+			<View style={{ flex: 1 }}>
+				{gameCheckContext.noMatch ? (
+					<Text
+						style={[
+							AppStyles.h3,
+							AppStyles.warning,
+							{ alignSelf: 'center', width: '85%' },
+						]}
 					>
-						<View style={styles.conteiner}>
-							<ImageBackground
-								style={styles.imageStyle}
-								source={setRightImages(course.image)}
-								resizeMode="cover"
-							>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'flex-end',
-										paddingRight: 15,
-										paddingTop: 5,
-									}}
+						Inga banor hittades med namnet "{gameCheckContext.wordToSearch}"
+					</Text>
+				) : gameCheckContext.searchArray.length > 0 ? (
+					gameCheckContext.searchArray.map((course, index) => (
+						<TouchableOpacity
+							index={index}
+							key={index}
+							disabled={gameCheckContext.gameStarted}
+							onPress={() => pressCard(course.name, course.courseguide)}
+						>
+							<View style={styles.conteiner}>
+								<ImageBackground
+									style={styles.imageStyle}
+									source={setRightImages(course.image)}
+									resizeMode="cover"
 								>
-									<Fontisto name={course.icon} size={24} color="white" />
-								</View>
-								<View style={styles.viewInsideCard}>
-									<Text style={[AppStyles.h2, styles.textInsideCard]}>
-										{course.name}
-									</Text>
-									<Text style={[styles.textInsideCard]}>
-										{course.holes}-hålsbana
-									</Text>
-									<Text style={[styles.textInsideCard]}>
-										Övrigt: {course.information}
-									</Text>
-								</View>
-							</ImageBackground>
-						</View>
-					</TouchableOpacity>
-				))
-			) : (
-				courseArray.map((course, index) => (
-					<TouchableOpacity
-						index={index}
-						key={index}
-						disabled={gameCheckContext.gameStarted}
-						onPress={() => {
-							navigation.navigate('Scorecard', {
-								courseName: course.name,
-								courseGuide: course.courseguide,
-							})
-						}}
-					>
-						<View style={styles.conteiner}>
-							<ImageBackground
-								style={styles.imageStyle}
-								source={setRightImages(course.image)}
-								resizeMode="cover"
-							>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-										paddingRight: 15,
-										paddingTop: 5,
-										paddingLeft: 15,
-									}}
-								>
-									{currentLocation && (
-										<Text style={[styles.textInsideCard]}>
-											Avstånd:{' '}
-											{getLocationDistance(currentLocation, course.location)} km
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+											paddingRight: 15,
+											paddingTop: 5,
+											paddingLeft: 15,
+										}}
+									>
+										{currentLocation && (
+											<Text style={[styles.textInsideCard]}>
+												Avstånd:{' '}
+												{getLocationDistance(currentLocation, course.location)}{' '}
+												km
+											</Text>
+										)}
+										<Fontisto name={course.icon} size={24} color="white" />
+									</View>
+									<View style={styles.viewInsideCard}>
+										<Text style={[AppStyles.h2, styles.textInsideCard]}>
+											{course.name}
 										</Text>
-									)}
-									<Fontisto name={course.icon} size={24} color="white" />
-								</View>
+										<Text style={[styles.textInsideCard]}>
+											{course.holes}-hålsbana
+										</Text>
+										<Text style={[styles.textInsideCard]}>
+											Övrigt: {course.information}
+										</Text>
+									</View>
+								</ImageBackground>
+							</View>
+						</TouchableOpacity>
+					))
+				) : (
+					courseArray.map((course, index) => (
+						<TouchableOpacity
+							index={index}
+							key={index}
+							disabled={gameCheckContext.gameStarted}
+							onPress={() => {
+								navigation.navigate('Scorecard', {
+									courseName: course.name,
+									courseGuide: course.courseguide,
+								})
+							}}
+						>
+							<View style={styles.conteiner}>
+								<ImageBackground
+									style={styles.imageStyle}
+									source={setRightImages(course.image)}
+									resizeMode="cover"
+								>
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+											paddingRight: 15,
+											paddingTop: 5,
+											paddingLeft: 15,
+										}}
+									>
+										{currentLocation && (
+											<Text style={[styles.textInsideCard]}>
+												Avstånd:{' '}
+												{getLocationDistance(currentLocation, course.location)}{' '}
+												km
+											</Text>
+										)}
+										<Fontisto name={course.icon} size={24} color="white" />
+									</View>
 
-								<View style={styles.viewInsideCard}>
-									<Text style={[AppStyles.h2, styles.textInsideCard]}>
-										{course.name}
-									</Text>
-									<Text style={[styles.textInsideCard]}>
-										{course.holes}-hålsbana
-									</Text>
-									<Text style={[styles.textInsideCard]}>
-										Övrigt: {course.information}
-									</Text>
-								</View>
-							</ImageBackground>
-						</View>
-					</TouchableOpacity>
-				))
-			)}
-		</View>
-	)
+									<View style={styles.viewInsideCard}>
+										<Text style={[AppStyles.h2, styles.textInsideCard]}>
+											{course.name}
+										</Text>
+										<Text style={[styles.textInsideCard]}>
+											{course.holes}-hålsbana
+										</Text>
+										<Text style={[styles.textInsideCard]}>
+											Övrigt: {course.information}
+										</Text>
+									</View>
+								</ImageBackground>
+							</View>
+						</TouchableOpacity>
+					))
+				)}
+			</View>
+		)
 }
 
 export default CourseCard
@@ -209,7 +230,7 @@ const styles = StyleSheet.create({
 	conteiner: {
 		borderRadius: 15,
 		width: '85%',
-		height: 100,
+		height: 110,
 		marginTop: 20,
 		alignItems: 'center',
 		borderWidth: 1,
