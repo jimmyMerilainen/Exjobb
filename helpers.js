@@ -4,7 +4,7 @@ import AppStyles from './styles/AppStyles'
 /** ConvertResponseText(string: text)
  * Insert firebase error message to translate to swedish
  */
-export function ConvertResponseText(text) {
+export function convertResponseText(text) {
 	if (text === 'Firebase: Error (auth/user-not-found).') {
 		return 'Avändare finns inte'
 	}
