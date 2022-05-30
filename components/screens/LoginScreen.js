@@ -23,7 +23,7 @@ const LoginScreen = () => {
 	const [password, setPassword] = useState()
 	const [showPassword, setShowPassword] = useState(false)
 	const [errorMessage, setErrorMessage] = useState()
-	const [isLoading, setIsLoading] = useState(true)
+	const [isLoading, setIsLoading] = useState(false)
 	const ref_input = useRef()
 
 	const handleSignIn = () => {
