@@ -19,7 +19,6 @@ import LoadingIndicator from '../LoadingIndicator'
 const ProfileScreen = ({ navigation }) => {
 	const [username, setUsername] = useState('Tiger Woods')
 	const [playedRounds, setPlayedRounds] = useState([])
-	const [isLoading, setIsLoading] = useState(true)
 
 	const loadUser = async () => {
 		setIsLoading(true)
@@ -43,10 +42,12 @@ const ProfileScreen = ({ navigation }) => {
 	useEffect(() => {
 		const colRef = collection(db, 'users')
 		onSnapshot(colRef, (snapshot) => {
-			return loadUser()
+			loadUser()
 		})
+		return () => {
+			setPlayedRounds([])
+		}
 	}, [])
-
 	return (
 		<ImageBackground
 			style={AppStyles.container}
