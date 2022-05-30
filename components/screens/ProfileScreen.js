@@ -10,7 +10,10 @@ import {
   collection,
   getDocs,
   onSnapshot,
+  doc,
+  updateDoc,
 } from 'firebase/firestore'
+import * as ImagePicker from 'expo-image-picker'
 
 import AppStyles from '../../styles/AppStyles'
 import HistoryFlatlist from '../HistoryFlatlist'
@@ -18,6 +21,7 @@ import HistoryFlatlist from '../HistoryFlatlist'
 const ProfileScreen = ({ navigation }) => {
   const [username, setUsername] = useState('Tiger Woods')
   const [playedRounds, setPlayedRounds] = useState([])
+  const [profilePic, setProfilePic] = useState(null)
 
   const loadUser = async () => {
     let userHistory = []
@@ -31,6 +35,7 @@ const ProfileScreen = ({ navigation }) => {
     })
 
     setUsername(userHistory[0].username)
+    setProfilePic(userHistory[0].profilePicture)
     if (userHistory[0].history !== undefined) {
       setPlayedRounds(userHistory[0].history)
     }
@@ -45,6 +50,22 @@ const ProfileScreen = ({ navigation }) => {
       setPlayedRounds([])
     }
   }, [])
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    if (!result.cancelled) {
+      const coll = doc(db, 'users', auth.currentUser.uid)
+      await updateDoc(coll, {
+        profilePicture: result.uri,
+      })
+    }
+  }
 
   return (
     <ImageBackground
@@ -77,18 +98,20 @@ const ProfileScreen = ({ navigation }) => {
               flex: 0.15,
             }}
           >
-            <View
+            <TouchableOpacity
               style={{
                 justifyContent: 'center',
                 flex: 0.3,
               }}
+              onPress={pickImage}
             >
               <UserAvatar
                 name={username ? username : null}
+                src={profilePic}
                 size={110}
                 bgColor="#96C2A8"
               />
-            </View>
+            </TouchableOpacity>
 
             <View
               style={{
