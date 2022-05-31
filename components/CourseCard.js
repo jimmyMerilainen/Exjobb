@@ -142,13 +142,13 @@ const CourseCard = ({ navigation }) => {
 											paddingLeft: 15,
 										}}
 									>
-										{currentLocation && (
-											<Text style={[styles.textInsideCard]}>
-												Avstånd:{' '}
-												{getLocationDistance(currentLocation, course.location)}{' '}
-												km
-											</Text>
-										)}
+										<Text style={[styles.textInsideCard]}>
+											Avstånd:{' '}
+											{currentLocation &&
+												getLocationDistance(currentLocation, course.location)}
+											km
+										</Text>
+
 										<Fontisto name={course.icon} size={24} color="white" />
 									</View>
 									<View style={styles.viewInsideCard}>
@@ -194,13 +194,16 @@ const CourseCard = ({ navigation }) => {
 											paddingLeft: 15,
 										}}
 									>
-										{currentLocation && (
-											<Text style={[styles.textInsideCard]}>
-												Avstånd:{' '}
-												{getLocationDistance(currentLocation, course.location)}{' '}
-												km
-											</Text>
-										)}
+										<Text style={[styles.textInsideCard]}>
+											Avstånd:{' '}
+											{currentLocation &&
+												getLocationDistance(
+													currentLocation,
+													course.location,
+												)}{' '}
+											km
+										</Text>
+
 										<Fontisto name={course.icon} size={24} color="white" />
 									</View>
 
