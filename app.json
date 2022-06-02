@@ -7,7 +7,7 @@
     "icon": "./assets/golfhacker-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/golfhacker-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
