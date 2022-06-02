@@ -10,7 +10,10 @@ import {
 import AppStyles from '../../styles/AppStyles'
 import { Ionicons } from '@expo/vector-icons'
 
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import {
+	signInWithEmailAndPassword,
+	sendPasswordResetEmail,
+} from 'firebase/auth'
 import { auth } from '../../firebase'
 
 import ButtonDefault from '../ButtonDefault'
@@ -38,6 +41,17 @@ const LoginScreen = () => {
 				setErrorMessage(error.message)
 			})
 		setIsLoading(false)
+	}
+
+	const forgotPassword = () => {
+		sendPasswordResetEmail(auth, 'raasmusnilsson@gmail.com')
+			.then((response) => {
+				console.log('Email sent!')
+				console.log(response) // undefined
+			})
+			.catch((error) => {
+				console.log(error.message)
+			})
 	}
 
 	if (isLoading) {
@@ -112,6 +126,15 @@ const LoginScreen = () => {
 							Konto sedan tidigare?{'\n'}Logga in ovan för att ladda dina
 							uppgifter
 						</Text>
+						<TouchableOpacity
+							onPress={() => {
+								forgotPassword()
+							}}
+						>
+							<Text style={[AppStyles.h3, { marginTop: 10, color: 'white' }]}>
+								Glömt lösenord?
+							</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</ImageBackground>
