@@ -207,7 +207,12 @@ const CourseCard = ({ navigation }) => {
                       km
                     </Text>
 
-                    <Fontisto name={course.icon} size={24} color="white" />
+                    <Fontisto
+                      name={course.icon}
+                      size={24}
+                      color="white"
+                      style={styles.textInsideCard}
+                    />
                   </View>
 
                   <View style={styles.viewInsideCard}>
@@ -257,5 +262,7 @@ const styles = StyleSheet.create({
   },
   textInsideCard: {
     color: 'white',
+    textShadowRadius: 1,
+    textShadowColor: 'gray',
   },
 })
