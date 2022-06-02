@@ -22,14 +22,14 @@ const CourseCard = ({ navigation }) => {
 	const gameCheckContext = useGameCheckFunction()
 	const [courseArray, setCourseArray] = useState([])
 	const [tempCourseArray, setTempCourseArray] = useState([])
-	const [currentLocation, setCurrentLocation] = useState(null)
+	const [currentLocation, setCurrentLocation] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
 
 	const [done, setDone] = useState(false)
 
 	useEffect(() => {
+		setIsLoading(true)
 		const getCurrentLocation = async () => {
-			setIsLoading(true)
 			let { status } = await Location.requestForegroundPermissionsAsync()
 			if (status !== 'granted') {
 				console.log('Permission to access location was denied')
@@ -40,9 +40,9 @@ const CourseCard = ({ navigation }) => {
 				latitude: currentLocation.coords.latitude,
 				longitude: currentLocation.coords.longitude,
 			})
-			setIsLoading(false)
 		}
 		getCurrentLocation()
+		setIsLoading(false)
 	}, [])
 
 	useEffect(() => {
@@ -57,10 +57,9 @@ const CourseCard = ({ navigation }) => {
 			})
 			setTempCourseArray(tempArray)
 			setDone(true)
-			setIsLoading(false)
 		}
-
 		getCourse()
+		setIsLoading(false)
 	}, [])
 
 	useEffect(() => {
@@ -83,10 +82,10 @@ const CourseCard = ({ navigation }) => {
 			}
 			gameCheckContext.setCourseArray(tempArray)
 			setCourseArray(tempArray)
-			setIsLoading(false)
 		}
 
 		fetchWeather()
+		setIsLoading(false)
 	}, [done])
 
 	const setRightImages = (courseImage) => {
