@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
 
 const GameContext = React.createContext()

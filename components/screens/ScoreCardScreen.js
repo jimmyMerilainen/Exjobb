@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -41,7 +41,6 @@ const ScoreCardScreen = ({ route, navigation }) => {
 
     setScoreCard(array)
     gameCheckContext.setGameStarted(true)
-    // navigation.goBack()
   }
 
   const endGame = async () => {

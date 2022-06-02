@@ -7,7 +7,6 @@ const Dropdown = ({ placeholderDd, DpArray, callBack }) => {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [placeholder, setPlacholder] = useState(null)
   const [dropdownArray, setDropdownArray] = useState([])
-  // const [checkBeforeStart, setCheckBeforeStart] = useState(false)
 
   useEffect(() => {
     setPlacholder(placeholderDd)
@@ -67,14 +66,12 @@ export default Dropdown
 
 const styles = StyleSheet.create({
   conteiner: {
-    // backgroundColor: 'blue',
     marginBottom: 20,
   },
   dropdownView: {
     height: 50,
     backgroundColor: 'white',
     justifyContent: 'space-between',
-    // alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 15,
     borderWidth: 1,
@@ -96,7 +93,5 @@ const styles = StyleSheet.create({
     borderColor: '#DDB58E',
     backgroundColor: 'white',
     borderColor: '#DDB58E',
-    // width: '45%',
-    // alignSelf: 'center',
   },
 })
