@@ -14,6 +14,7 @@ import Fontisto from '@expo/vector-icons/Fontisto'
 import LoadingIndicator from './LoadingIndicator'
 import { getLocationDistance } from '../helpers'
 import * as Location from 'expo-location'
+import api from '../key'
 
 import { db } from '../firebase'
 import { getDocs, collection, orderBy, query } from 'firebase/firestore'
@@ -68,7 +69,7 @@ const CourseCard = ({ navigation }) => {
     const fetchWeather = async () => {
       for (let index = 0; index < tempCourseArray.length; index++) {
         const data = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${tempCourseArray[index].city}&appid=8d2d6315d41f327ab048d502e92fe5d5`
+          `https://api.openweathermap.org/data/2.5/weather?q=${tempCourseArray[index].city}&appid=${api}`
         )
         const response = await data.json()
 
