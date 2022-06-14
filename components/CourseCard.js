@@ -14,7 +14,7 @@ import Fontisto from '@expo/vector-icons/Fontisto'
 import LoadingIndicator from './LoadingIndicator'
 import { getLocationDistance } from '../helpers'
 import * as Location from 'expo-location'
-import api from '../key'
+import api from '../keys/key'
 
 import { db } from '../firebase'
 import { getDocs, collection, orderBy, query } from 'firebase/firestore'
